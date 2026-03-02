@@ -3,6 +3,7 @@ package com.pm.saaspossystem.model;
 import com.pm.saaspossystem.domain.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import jdk.jfr.MemoryAddress;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,6 +46,9 @@ public class User {
     @Email(message = "Invalid email format")
     @Column(nullable = false, unique = true)
     private String email;
+
+    @ManyToOne()
+    private Store store;
 
 
 

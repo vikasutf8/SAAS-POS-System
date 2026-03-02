@@ -104,6 +104,7 @@ public class UserServiceImplmentions implements UserService {
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .role(user.getRole())
+                .store(user.getStore())
                 .lastLogin(user.getLastLogin())
                 .build();
     }

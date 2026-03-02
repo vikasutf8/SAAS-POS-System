@@ -1,6 +1,7 @@
 package com.pm.saaspossystem.payload.dto;
 
 import com.pm.saaspossystem.domain.UserRole;
+import com.pm.saaspossystem.model.Store;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
@@ -31,6 +32,8 @@ public class UserDto {
     @Email(message = "Invalid email format")
     private String email;
 
+
+    private Store store;
 
 
 

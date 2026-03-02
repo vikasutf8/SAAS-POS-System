@@ -31,6 +31,10 @@ public class Store {
     @Column(nullable = false)
     private String branch;
 
+    @NotBlank(message = "Brand name is required")
+    @Column(nullable = false)
+    private String brand;
+
     // Store Admin (One-to-One)
     @OneToOne
     @JoinColumn(name = "store_admin_id", nullable = false, unique = true)
