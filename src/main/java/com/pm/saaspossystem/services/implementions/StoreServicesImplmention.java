@@ -110,6 +110,16 @@ public class StoreServicesImplmention implements StoreServices {
     }
 
     @Override
+    public StoreDto moderateStore(Long id, StoreStatus storeStatus) throws UserExceptions {
+        Store store = storeRepository.findById(id).orElseThrow(()-> new UserExceptions("Store not found"));
+
+        store.setStatus(storeStatus);
+        Store updateStore =storeRepository.save(store);
+
+        return StoreMapper.toDto(updateStore);
+    }
+
+    @Override
     public StoreDto getStoreByEmployee() throws UserExceptions {
         UserDto currentUser = userService.getCurrentUser();
 

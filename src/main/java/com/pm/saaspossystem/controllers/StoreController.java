@@ -1,5 +1,6 @@
 package com.pm.saaspossystem.controllers;
 
+import com.pm.saaspossystem.domain.StoreStatus;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.Store;
@@ -71,6 +72,15 @@ public class StoreController {
     ) throws Exception {
 
         return storeServices.updateStore(id, storeDto);
+    }
+
+    @PutMapping("/{id}/status")
+    public StoreDto moderateStore(
+            @PathVariable Long id,
+            @RequestParam StoreStatus storeStatus
+    ) throws Exception {
+
+        return storeServices.moderateStore(id,storeStatus);
     }
 
     // =========================================

@@ -1,5 +1,6 @@
 package com.pm.saaspossystem.services;
 
+import com.pm.saaspossystem.domain.StoreStatus;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.model.Store;
 import com.pm.saaspossystem.model.User;
@@ -18,4 +19,5 @@ public interface StoreServices
     StoreDto deleteStore(Long id) throws UserExceptions; //soft deleted
     StoreDto getStoreByEmployee() throws UserExceptions;
     void deleteStore() throws UserExceptions;
+    StoreDto moderateStore(Long id, StoreStatus storeStatus) throws UserExceptions;
 }
