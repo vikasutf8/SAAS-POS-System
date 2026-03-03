@@ -1,0 +1,93 @@
+package com.pm.saaspossystem.services.implementions;
+
+import com.pm.saaspossystem.exceptions.UserExceptions;
+import com.pm.saaspossystem.mapper.CategoryMapper;
+import com.pm.saaspossystem.model.Category;
+import com.pm.saaspossystem.model.Store;
+import com.pm.saaspossystem.payload.dto.CategoryDto;
+import com.pm.saaspossystem.payload.dto.UserDto;
+import com.pm.saaspossystem.repository.CategoryRepository;
+import com.pm.saaspossystem.repository.StoreRepository;
+import com.pm.saaspossystem.services.CategoryServices;
+import com.pm.saaspossystem.services.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+@Service
+@RequiredArgsConstructor
+public class CategoryServicesImplmention implements CategoryServices {
+
+
+    private final CategoryRepository categoryRepository;
+    private final StoreRepository storeRepository;
+    private final UserService userService;
+    @Override
+    public CategoryDto createCategory(CategoryDto categoryDto) throws UserExceptions {
+        UserDto user =userService.getCurrentUser();
+
+       Store store = storeRepository.findById(categoryDto.getStoreId()).orElseThrow(() -> new UserExceptions("Store not Found"));
+
+        Category category = Category.builder()
+                .name(categoryDto.getName())
+                .store(store)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        // have to save
+        Category saveCategory =categoryRepository.save(category);
+
+        return CategoryMapper.toDto(saveCategory);
+    }
+
+    @Override
+    public List<CategoryDto> getCategoriesByStore(Long storeId) {
+//        return List.of();
+        List<Category> categoryList =categoryRepository.findByStoreId(storeId);
+
+        return categoryList.stream().map(CategoryMapper::toDto).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public CategoryDto updateCategory(Long id, CategoryDto categoryDto) throws UserExceptions {
+        Category category = categoryRepository.findById(id).orElseThrow(()->new UserExceptions("categories not exist for this store"));
+        UserDto user =userService.getCurrentUser();
+//        // 2️⃣ Find category
+//        Category category = categoryRepository.findById(id)
+//                .orElseThrow(() ->
+//                        new UserExceptions("Category does not exist"));
+//A user from Store A could update Store B’s category ❌
+//        // 3️⃣ Check store ownership (VERY IMPORTANT)
+//        if (!category.getStore().getId()
+//                .equals(currentUser.getStore().getId())) {
+//
+//            throw new UserExceptions("You are not allowed to update this category");
+//        }
+
+        // 4️⃣ Update fields
+        category.setName(categoryDto.getName());
+//        category.setStore(categoryRepository.findById(categoryDto.getStoreId()));
+
+        // 5️⃣ Save
+        Category updatedCategory = categoryRepository.save(category);
+
+        // 6️⃣ Return DTO
+        return CategoryMapper.toDto(updatedCategory);
+
+    }
+
+    @Override
+    public void deleteCategory(Long id) throws UserExceptions {
+        Category category = categoryRepository.findById(id).orElseThrow(()->new UserExceptions("categories not exist for this store"));
+//        UserDto user =userService.getCurrentUser();
+
+        categoryRepository.delete(category);
+
+    }
+}
