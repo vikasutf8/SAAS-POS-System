@@ -1,9 +1,12 @@
 package com.pm.saaspossystem.services.implementions;
 
+import com.pm.saaspossystem.domain.UserRole;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.CategoryMapper;
+import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.Category;
 import com.pm.saaspossystem.model.Store;
+import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.CategoryDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.repository.CategoryRepository;
@@ -27,7 +30,7 @@ public class CategoryServicesImplmention implements CategoryServices {
     private final StoreRepository storeRepository;
     private final UserService userService;
     @Override
-    public CategoryDto createCategory(CategoryDto categoryDto) throws UserExceptions {
+    public CategoryDto createCategory(CategoryDto categoryDto) throws UserExceptions, IllegalAccessException {
         UserDto user =userService.getCurrentUser();
 
        Store store = storeRepository.findById(categoryDto.getStoreId()).orElseThrow(() -> new UserExceptions("Store not Found"));
@@ -38,6 +41,9 @@ public class CategoryServicesImplmention implements CategoryServices {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
+
+        checkAuthortize(UserMapper.toEntity(user), store);
+
 
         // have to save
         Category saveCategory =categoryRepository.save(category);
@@ -55,7 +61,7 @@ public class CategoryServicesImplmention implements CategoryServices {
     }
 
     @Override
-    public CategoryDto updateCategory(Long id, CategoryDto categoryDto) throws UserExceptions {
+    public CategoryDto updateCategory(Long id, CategoryDto categoryDto) throws UserExceptions, IllegalAccessException {
         Category category = categoryRepository.findById(id).orElseThrow(()->new UserExceptions("categories not exist for this store"));
         UserDto user =userService.getCurrentUser();
 //        // 2️⃣ Find category
@@ -63,6 +69,8 @@ public class CategoryServicesImplmention implements CategoryServices {
 //                .orElseThrow(() ->
 //                        new UserExceptions("Category does not exist"));
 //A user from Store A could update Store B’s category ❌
+        checkAuthortize(UserMapper.toEntity(user), category.getStore());
+
 //        // 3️⃣ Check store ownership (VERY IMPORTANT)
 //        if (!category.getStore().getId()
 //                .equals(currentUser.getStore().getId())) {
@@ -83,11 +91,24 @@ public class CategoryServicesImplmention implements CategoryServices {
     }
 
     @Override
-    public void deleteCategory(Long id) throws UserExceptions {
+    public void deleteCategory(Long id) throws UserExceptions, IllegalAccessException {
         Category category = categoryRepository.findById(id).orElseThrow(()->new UserExceptions("categories not exist for this store"));
-//        UserDto user =userService.getCurrentUser();
-
+        UserDto user =userService.getCurrentUser();
+        checkAuthortize(UserMapper.toEntity(user), category.getStore());
         categoryRepository.delete(category);
+
+    }
+
+
+    private void checkAuthortize(User user, Store store) throws IllegalAccessException {
+
+        Boolean isAdmin = user.getRole().equals(UserRole.ROLE_ADMIN);
+        Boolean isManager = user.getRole().equals(UserRole.ROLE_STORE_MANAGER);
+        Boolean isSameStoreManager = user.equals(store.getStoreAdmin());
+
+if(!(isAdmin && isSameStoreManager) && !isManager){
+    throw  new IllegalAccessException("Illegel Access");
+}
 
     }
 }

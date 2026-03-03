@@ -27,17 +27,8 @@ public class ProductDto {
     // ========================================
     // Relationships
     // ========================================
+    private CategoryDto category;
 
-    // Many products belong to one category
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "category_id", nullable = false)
-//    @NotNull(message = "Category is required")
-//    private Category category;
-
-    // Many products belong to one store
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "store_id", nullable = false)
-//    @NotNull(message = "Store is required")
     private Long storeId;
     private Long categoryId;
 

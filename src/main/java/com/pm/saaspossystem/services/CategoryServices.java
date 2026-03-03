@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface CategoryServices {
 
-    CategoryDto createCategory(CategoryDto categoryDto) throws UserExceptions;
+    CategoryDto createCategory(CategoryDto categoryDto) throws UserExceptions, IllegalAccessException;
     List<CategoryDto> getCategoriesByStore(Long storeId);
-    CategoryDto updateCategory(Long id, CategoryDto categoryDto) throws UserExceptions;
-    void deleteCategory(Long id) throws UserExceptions;
+    CategoryDto updateCategory(Long id, CategoryDto categoryDto) throws UserExceptions, IllegalAccessException;
+    void deleteCategory(Long id) throws UserExceptions, IllegalAccessException;
 }

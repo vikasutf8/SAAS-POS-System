@@ -27,3 +27,8 @@ Dynamic filters	--> Specification
 DB-specific optimization -->	Native
 Very high performance -->	JDBC
 Enterprise search -->	Elasticsearch
+
+
+## Product Service
+
+## Category Service

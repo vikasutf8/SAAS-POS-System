@@ -1,10 +1,12 @@
 package com.pm.saaspossystem.services.implementions;
 
 import com.pm.saaspossystem.mapper.ProductMapper;
+import com.pm.saaspossystem.model.Category;
 import com.pm.saaspossystem.model.Product;
 import com.pm.saaspossystem.model.Store;
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.ProductDto;
+import com.pm.saaspossystem.repository.CategoryRepository;
 import com.pm.saaspossystem.repository.ProductRepository;
 import com.pm.saaspossystem.repository.StoreRepository;
 import com.pm.saaspossystem.services.ProductServices;
@@ -23,6 +25,7 @@ public class ProductServiceImplmention implements ProductServices {
     private final ProductRepository productRepository;
     private final StoreServices storeServices;
     private final StoreRepository storeRepository;
+    private final CategoryRepository categoryRepository;
 
 
     @Override
@@ -30,10 +33,10 @@ public class ProductServiceImplmention implements ProductServices {
         Store store = storeRepository.findById(productDto.getStoreId())
                 .orElseThrow(() -> new RuntimeException("Store not found"));
 
-//        Category category = categoryRepository.findById(dto.getCategoryId())
-//                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryRepository.findById(productDto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        Product product = ProductMapper.toEntity(productDto,store);
+        Product product = ProductMapper.toEntity(productDto,store,category);
         Product saveProduct = productRepository.save(product);
 
         return ProductMapper.toDto(saveProduct);
@@ -52,10 +55,10 @@ public class ProductServiceImplmention implements ProductServices {
         Store store = storeRepository.findById(productDto.getStoreId())
                 .orElseThrow(() -> new RuntimeException("Store not found"));
 
-//        Category category = categoryRepository.findById(dto.getCategoryId())
-//                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryRepository.findById(productDto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        ProductMapper.updateEntity(product, productDto, store);
+        ProductMapper.updateEntity(product, productDto, store,category);
 
 //        productRepository.save(product);
         Product saveProduct = productRepository.save(product);
@@ -73,6 +76,7 @@ public class ProductServiceImplmention implements ProductServices {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
+        // if this product is deteted so respective Category detail deleted in this own products table  ...not deleted in categories table
         productRepository.delete(product);
     }
 
