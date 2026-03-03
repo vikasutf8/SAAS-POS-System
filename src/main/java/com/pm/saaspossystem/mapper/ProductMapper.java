@@ -1,6 +1,5 @@
 package com.pm.saaspossystem.mapper;
 
-import com.pm.saaspossystem.model.Category;
 import com.pm.saaspossystem.model.Product;
 import com.pm.saaspossystem.model.Store;
 import com.pm.saaspossystem.payload.dto.ProductDto;
@@ -48,8 +47,9 @@ public class ProductMapper {
     // DTO → Entity (For Create)
     // =========================================
     public static Product toEntity(ProductDto dto,
-                                   Store store,
-                                   Category category) {
+                                   Store store
+//                                   Category category
+    ) {
 
         if (dto == null) {
             return null;
@@ -65,7 +65,7 @@ public class ProductMapper {
                 .brand(dto.getBrand())
                 .imageUri(dto.getImageUri())
                 .store(store)
-                .category(category)
+//                .category(category)
                 .build();
     }
 
@@ -74,8 +74,10 @@ public class ProductMapper {
     // =========================================
     public static void updateEntity(Product product,
                                     ProductDto dto,
-                                    Store store,
-                                    Category category) {
+                                    Store store
+//                                    Category category
+    )
+    {
 
         if (product == null || dto == null) {
             return;
@@ -93,8 +95,8 @@ public class ProductMapper {
             product.setStore(store);
         }
 
-        if (category != null) {
-            product.setCategory(category);
-        }
+//        if (category != null) {
+//            product.setCategory(category);
+//        }
     }
 }
