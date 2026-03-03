@@ -5,6 +5,7 @@ import com.pm.saaspossystem.model.StoreContact;
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.StoreContactDto;
 import com.pm.saaspossystem.payload.dto.StoreDto;
+import jakarta.validation.Valid;
 
 public class StoreMapper {
 
@@ -62,7 +63,7 @@ public class StoreMapper {
     // Contact Mapping
     // ================================
 
-    public static StoreContactDto toContactDto(StoreContactDto contact) {
+    public static StoreContactDto toContactDto(@Valid StoreContact contact) {
         if (contact == null) {
             return null;
         }
