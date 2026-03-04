@@ -23,6 +23,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .role(user.getRole())
+//                .store()
                 .updatedAt(user.getUpdatedAt())
                 .createdAt(user.getCreatedAt())
                 .lastLogin(user.getLastLogin())

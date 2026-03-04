@@ -3,7 +3,6 @@ package com.pm.saaspossystem.model;
 import com.pm.saaspossystem.domain.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import jdk.jfr.MemoryAddress;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,7 +50,8 @@ public class User {
     private Store store;
 
 
-
+    @ManyToOne()
+    private Branch branch;
 
     @NotNull(message = "Role is required")
     @Enumerated(EnumType.STRING)

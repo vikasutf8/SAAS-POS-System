@@ -1,13 +1,11 @@
 package com.pm.saaspossystem.payload.dto;
 
 import com.pm.saaspossystem.domain.UserRole;
+import com.pm.saaspossystem.model.Branch;
 import com.pm.saaspossystem.model.Store;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -34,6 +32,12 @@ public class UserDto {
 
 
     private Store store;
+
+    private Branch branch;
+
+    private Long storeId;
+    private Long branchId;
+
 
 
 
