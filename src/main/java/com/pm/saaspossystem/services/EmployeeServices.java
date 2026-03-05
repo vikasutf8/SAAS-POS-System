@@ -6,7 +6,7 @@ import com.pm.saaspossystem.payload.dto.UserDto;
 import java.util.List;
 
 public interface EmployeeServices {
-    UserDto createStoreEmployee(UserDto userDto,Long storeId);
+    UserDto createStoreEmployee(UserDto userDto,Long storeId) throws Exception;
     UserDto createBranchEmployee(UserDto userDto,Long branchId);
     UserDto updateEmployee(Long id, UserDto userDto);
     void deleteEmployee(Long id);
