@@ -21,7 +21,7 @@ public class CategoryController {
     // =========================================
     @PostMapping
     public CategoryDto createCategory(@RequestBody CategoryDto categoryDto)
-            throws UserExceptions {
+            throws UserExceptions, IllegalAccessException {
 
         return categoryServices.createCategory(categoryDto);
     }
@@ -41,7 +41,7 @@ public class CategoryController {
     @PutMapping("/{id}")
     public CategoryDto updateCategory(@PathVariable Long id,
                                       @RequestBody CategoryDto categoryDto)
-            throws UserExceptions {
+            throws UserExceptions, IllegalAccessException {
 
         return categoryServices.updateCategory(id, categoryDto);
     }
@@ -51,7 +51,7 @@ public class CategoryController {
     // =========================================
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable Long id)
-            throws UserExceptions {
+            throws UserExceptions, IllegalAccessException {
 
         categoryServices.deleteCategory(id);
     }

@@ -31,6 +31,7 @@ public class StoreMapper {
                 .status(store.getStatus())
                 .createdAt(store.getCreatedAt())
                 .updatedAt(store.getUpdatedAt())
+//                .storeAdmin(UserMapper.toDto(store.getStoreAdmin()))
                 .storeAdmin(UserMapper.toDto(store.getStoreAdmin()))
                 .contact(toContactDto(store.getContact()))
                 .build();

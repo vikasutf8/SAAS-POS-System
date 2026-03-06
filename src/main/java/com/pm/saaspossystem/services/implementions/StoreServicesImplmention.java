@@ -5,7 +5,6 @@ import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.StoreMapper;
 import com.pm.saaspossystem.model.Store;
 import com.pm.saaspossystem.model.User;
-import com.pm.saaspossystem.payload.dto.StoreContactDto;
 import com.pm.saaspossystem.payload.dto.StoreDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.repository.StoreRepository;
@@ -79,9 +78,10 @@ public class StoreServicesImplmention implements StoreServices {
 //                    .email(storeDto.getContact().getEmail())
 //                    .build();
 
-            StoreContactDto contactDto = StoreMapper.toContactDto(storeDto.getContact());
-            //mapper
-            existingStore.setContact(StoreMapper.toContactEntity(contactDto));
+//            StoreContactDto contactDto = StoreMapper.toContactDto(storeDto.getContact()) ;
+//            //mapper
+//            existingStore.setContact(StoreMapper.toContactEntity(contactDto));
+            existingStore.setContact(StoreMapper.toContactEntity(storeDto.getContact()));
         }
 
         Store updateStore = storeRepository.save(existingStore);

@@ -12,7 +12,7 @@ public class UserMapper {
     // Entity → DTO
     // ================================
 
-    public static UserDto toDto(User user) {
+    public static User toDto(User user) {
         if (user == null) {
             return null;
         }
@@ -23,7 +23,8 @@ public class UserMapper {
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .role(user.getRole())
-//                .store()
+                .storeId(user.getStore() != null ? user.getStore().getId() : null)
+                .branchId(user.getBranch() != null ? user.getBranch().getId() : null)
                 .updatedAt(user.getUpdatedAt())
                 .createdAt(user.getCreatedAt())
                 .lastLogin(user.getLastLogin())
