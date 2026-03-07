@@ -1,8 +1,6 @@
 package com.pm.saaspossystem.payload.dto;
 
 import com.pm.saaspossystem.domain.UserRole;
-import com.pm.saaspossystem.model.Branch;
-import com.pm.saaspossystem.model.Store;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
@@ -31,23 +29,14 @@ public class UserDto {
     private String email;
 
 
-    private Store store;
-
-    private Branch branch;
-
     private Long storeId;
     private Long branchId;
-
-
 
 
     @NotNull(message = "Role is required")
     private UserRole role;
 
     private LocalDateTime createdAt;
-
-
     private LocalDateTime updatedAt;
-
     private LocalDateTime lastLogin;
 }

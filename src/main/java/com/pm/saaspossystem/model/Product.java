@@ -27,17 +27,9 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
 
-
-    // ========================================
-    // ID
-    // ========================================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // ========================================
-    // Basic Info
-    // ========================================
 
     @NotBlank(message = "Product name is required")
     @Size(max = 150)
@@ -65,10 +57,6 @@ public class Product {
     @Positive(message = "Selling price must be positive")
     @Column(nullable = false)
     private Double sellingPrice;
-
-    // ========================================
-    // Other Info
-    // ========================================
 
     @Size(max = 100)
     private String brand;

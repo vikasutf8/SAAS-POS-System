@@ -29,10 +29,9 @@ public class BranchDto {
 
     private LocalTime closeTime;
 
-    private StoreDto store;
     private Long storeId;
 
-    private UserDto manager;
+    private Long managerId; //userId
 
     private LocalDateTime createdAt;
 

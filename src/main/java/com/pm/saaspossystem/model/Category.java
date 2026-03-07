@@ -28,16 +28,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Category {
-    // ========================================
-    // ID
-    // ========================================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ========================================
-    // Name
-    // ========================================
     @NotBlank(message = "Category name is required")
     @Size(max = 100)
     @Column(nullable = false)
@@ -61,6 +55,4 @@ public class Category {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-//    public void setStore(Optional<Category> byId) {
-//    }
 }

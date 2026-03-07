@@ -3,6 +3,8 @@ package com.pm.saaspossystem.payload.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class CategoryDto {
@@ -10,7 +12,8 @@ public class CategoryDto {
 
     private Long id;
     private String name;
-//    private StoreDto store;
     private Long storeId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
 

@@ -27,7 +27,6 @@ public class ProductDto {
     // ========================================
     // Relationships
     // ========================================
-    private CategoryDto category;
 
     private Long storeId;
     private Long categoryId;

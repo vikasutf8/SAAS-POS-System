@@ -1,12 +1,7 @@
 package com.pm.saaspossystem.payload.dto;
 
 import com.pm.saaspossystem.domain.StoreStatus;
-import com.pm.saaspossystem.model.StoreContact;
-import com.pm.saaspossystem.model.User;
-import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -27,7 +22,7 @@ public class StoreDto {
     private String brand;
 
     // Store Admin (One-to-One)
-    private User storeAdmin;
+    private Long storeAdminId; // userId of the store admin
 
     // Store Type
     @NotBlank(message = "Store type is required")

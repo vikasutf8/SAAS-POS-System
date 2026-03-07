@@ -26,11 +26,6 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Branch Name
-    @NotBlank(message = "Branch name is required")
-    @Column(nullable = false)
-    private String branch;
-
     @NotBlank(message = "Brand name is required")
     @Column(nullable = false)
     private String brand;
