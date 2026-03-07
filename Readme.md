@@ -1,5 +1,13 @@
 # SaaS POS System - API Documentation
 
+## Database 
+### Docker
+```shell
+docker exec -it saas-pos-mysql-db mysql -u root -p
+
+root
+```
+
 Base URL: `api/v2`
 
 ---
