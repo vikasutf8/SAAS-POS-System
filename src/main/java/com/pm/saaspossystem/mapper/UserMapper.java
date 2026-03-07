@@ -12,7 +12,7 @@ public class UserMapper {
     // Entity → DTO
     // ================================
 
-    public static User toDto(User user) {
+    public static UserDto toDto(User user) {
         if (user == null) {
             return null;
         }
@@ -29,7 +29,6 @@ public class UserMapper {
                 .createdAt(user.getCreatedAt())
                 .lastLogin(user.getLastLogin())
                 .build();
-
 
     }
 

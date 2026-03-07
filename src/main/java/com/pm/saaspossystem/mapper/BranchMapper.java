@@ -34,14 +34,9 @@ public class BranchMapper {
                                 ? branch.getStore().getId()
                                 : null
                 )
-                .store(
-                        branch.getStore() != null
-                                ? StoreMapper.toDto(branch.getStore())
-                                : null
-                )
-                .manager(
+                .managerId(
                         branch.getManager() != null
-                                ? UserMapper.toDto(branch.getManager())
+                                ? branch.getManager().getId()
                                 : null
                 )
                 .createdAt(branch.getCreatedAt())
