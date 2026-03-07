@@ -8,12 +8,10 @@ import com.pm.saaspossystem.repository.UserRepository;
 import com.pm.saaspossystem.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -104,7 +102,7 @@ public class UserServiceImplmentions implements UserService {
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .role(user.getRole())
-                .store(user.getStore())
+                .storeId(user.getStore().getId())
                 .lastLogin(user.getLastLogin())
                 .build();
     }
