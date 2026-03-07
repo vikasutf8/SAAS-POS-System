@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -38,7 +37,7 @@ public class AuthServicesImplmention implements AuthServices {
 
         // ✅ 1. Check if user already exists
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new UserExceptions("User already exists with email: " + userDto.getEmail());
+            throw new UserExceptions(STR."User already exists with email: \{userDto.getEmail()}");
         }
 
         // ✅ 2. Prevent manual ADMIN creation (important security rule)

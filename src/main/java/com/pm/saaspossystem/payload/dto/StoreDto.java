@@ -14,9 +14,6 @@ public class StoreDto {
 
     private Long id;
 
-    // Branch Name
-    @NotBlank(message = "Branch name is required")
-    private String branch;
 
     @NotBlank(message = "Brand name is required")
     private String brand;

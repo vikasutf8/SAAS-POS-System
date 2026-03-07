@@ -24,16 +24,14 @@ public class StoreMapper {
 
         return StoreDto.builder()
                 .id(store.getId())
-                .branch(store.getBranch())
                 .brand(store.getBrand())
                 .storeType(store.getStoreType())
                 .description(store.getDescription())
                 .status(store.getStatus())
+                .storeAdminId(store.getStoreAdmin() != null ? store.getStoreAdmin().getId() : null)
+                .contact(toContactDto(store.getContact()))
                 .createdAt(store.getCreatedAt())
                 .updatedAt(store.getUpdatedAt())
-//                .storeAdmin(UserMapper.toDto(store.getStoreAdmin()))
-                .storeAdmin(UserMapper.toDto(store.getStoreAdmin()))
-                .contact(toContactDto(store.getContact()))
                 .build();
     }
 
@@ -48,7 +46,6 @@ public class StoreMapper {
 
         return Store.builder()
                 .id(dto.getId())
-                .branch(dto.getBranch())
                 .brand(dto.getBrand())
                 .storeType(dto.getStoreType())
                 .description(dto.getDescription())

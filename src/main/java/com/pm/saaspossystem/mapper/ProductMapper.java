@@ -29,7 +29,6 @@ public class ProductMapper {
                 .sellingPrice(product.getSellingPrice())
                 .brand(product.getBrand())
                 .imageUri(product.getImageUri())
-                .category(CategoryMapper.toDto(product.getCategory()))
                 .storeId(
                         product.getStore() != null
                                 ? product.getStore().getId()

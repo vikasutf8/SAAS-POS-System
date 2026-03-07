@@ -8,7 +8,6 @@ import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.StoreDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.repository.StoreRepository;
-import com.pm.saaspossystem.repository.UserRepository;
 import com.pm.saaspossystem.services.StoreServices;
 import com.pm.saaspossystem.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 public class StoreServicesImplmention implements StoreServices {
 
     private final StoreRepository storeRepository;
-    private final UserRepository userRepository;
     private final UserService userService;
 
     @Override
@@ -64,7 +62,6 @@ public class StoreServicesImplmention implements StoreServices {
         }
 
         existingStore.setBrand(storeDto.getBrand());
-        existingStore.setBranch(storeDto.getBranch());
         existingStore.setDescription(storeDto.getDescription());
 
         if(storeDto.getStoreType() !=null){
@@ -124,8 +121,9 @@ public class StoreServicesImplmention implements StoreServices {
         UserDto currentUser = userService.getCurrentUser();
 
         if(currentUser ==null){
-            throw  new UserExceptions("User havn;t permission to access");
+            throw  new UserExceptions("User havn't permission to access");
         }
-        return  StoreMapper.toDto(currentUser.getStore());
+        Long storeId =currentUser.getStoreId();
+        return  StoreMapper.toDto(storeRepository.findById(storeId).orElseThrow(()-> new UserExceptions("Store not found")));
     }
 }

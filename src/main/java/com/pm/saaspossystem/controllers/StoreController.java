@@ -86,7 +86,7 @@ public class StoreController {
     // =========================================
     // Soft Delete Store By ID
     // =========================================
-    @PutMapping("/{id}")
+    @PutMapping("delete/{id}")
     public StoreDto deleteStore(@PathVariable Long id) throws UserExceptions {
         return storeServices.deleteStore(id);
     }
@@ -94,7 +94,7 @@ public class StoreController {
     // =========================================
     // Delete Store Of Current Admin
     // =========================================
-    @DeleteMapping
+    @DeleteMapping("delete")
     public void deleteCurrentUserStore() throws UserExceptions {
         storeServices.deleteStore();
     }

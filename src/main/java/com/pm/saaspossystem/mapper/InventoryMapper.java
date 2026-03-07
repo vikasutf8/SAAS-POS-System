@@ -4,13 +4,10 @@ import com.pm.saaspossystem.model.Branch;
 import com.pm.saaspossystem.model.Inventory;
 import com.pm.saaspossystem.model.Product;
 import com.pm.saaspossystem.payload.dto.InventoryDto;
-import lombok.Builder;
-import lombok.Data;
 
-@Data
-@Builder
 public class InventoryMapper {
     private InventoryMapper() {
+        // prevent instantiation
     }
 
     // =========================================
@@ -24,28 +21,14 @@ public class InventoryMapper {
 
         return InventoryDto.builder()
                 .id(inventory.getId())
-
-                // Branch
                 .branchId(
                         inventory.getBranch() != null
                                 ? inventory.getBranch().getId()
                                 : null
                 )
-                .branch(
-                        inventory.getBranch() != null
-                                ? BranchMapper.toDto(inventory.getBranch())
-                                : null
-                )
-
-                // Product
                 .productId(
                         inventory.getProduct() != null
                                 ? inventory.getProduct().getId()
-                                : null
-                )
-                .product(
-                        inventory.getProduct() != null
-                                ? ProductMapper.toDto(inventory.getProduct())
                                 : null
                 )
 

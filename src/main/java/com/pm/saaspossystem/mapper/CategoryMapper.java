@@ -27,6 +27,8 @@ public class CategoryMapper {
                                 ? category.getStore().getId()
                                 : null
                 )
+                .createdAt(category.getCreatedAt())
+                .updatedAt(category.getUpdatedAt())
                 .build();
     }
 
