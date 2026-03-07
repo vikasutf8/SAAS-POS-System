@@ -22,6 +22,7 @@ public class OrderMapper {
                 .cashierId(order.getCashier() != null ? order.getCashier().getId() : null)
                 .customerId(order.getCustomer() != null ? order.getCustomer().getId() : null)
                 .paymentType(order.getPaymentType())
+                .orderStatus(order.getOrderStatus())
                 .items(order.getItems() != null ?
                         order.getItems().stream()
                                 .map(OrderItemMapper::toDto)
@@ -41,6 +42,7 @@ public class OrderMapper {
                 .totalAmount(dto.getTotalAmount())
                 .createdAt(dto.getCreatedAt())
                 .paymentType(dto.getPaymentType())
+                .orderStatus(dto.getOrderStatus())
                 .branch(
                         dto.getBranchId() != null ?
                                 Branch.builder().id(dto.getBranchId()).build() : null

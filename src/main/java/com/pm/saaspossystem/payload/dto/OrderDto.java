@@ -1,5 +1,6 @@
 package com.pm.saaspossystem.payload.dto;
 
+import com.pm.saaspossystem.domain.OrderStatus;
 import com.pm.saaspossystem.domain.PaymentType;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,8 @@ public class OrderDto {
     private Long customerId;
 
     private PaymentType paymentType;
+
+    private OrderStatus orderStatus;
 
     private List<OrderItemDto> items;
 

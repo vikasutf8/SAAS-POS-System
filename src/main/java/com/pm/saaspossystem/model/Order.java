@@ -1,5 +1,6 @@
 package com.pm.saaspossystem.model;
 
+import com.pm.saaspossystem.domain.OrderStatus;
 import com.pm.saaspossystem.domain.PaymentType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,11 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+
+
     // One Order -> Many OrderItems
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
@@ -58,4 +64,7 @@ public class Order {
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
+//    public OrderStatus getOrderStatus() {
+//    }
 }
