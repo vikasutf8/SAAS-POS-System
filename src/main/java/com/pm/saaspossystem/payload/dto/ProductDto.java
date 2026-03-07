@@ -35,4 +35,6 @@ public class ProductDto {
 
     private LocalDateTime updatedAt;
 
+
+
 }

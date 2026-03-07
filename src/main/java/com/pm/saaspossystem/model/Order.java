@@ -1,0 +1,61 @@
+package com.pm.saaspossystem.model;
+
+import com.pm.saaspossystem.domain.PaymentType;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Entity
+@Table(name = "orders")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Double totalAmount;
+
+    private LocalDateTime createdAt;
+
+    // Many Orders -> One Branch
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
+
+    // Many Orders -> One Cashier(User)
+    @ManyToOne
+    @JoinColumn(name = "cashier_id")
+    private User cashier;
+
+    // Many Orders -> One Customer
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    // Enum Payment Type
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
+
+    // One Order -> Many OrderItems
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+}
