@@ -8,6 +8,14 @@ docker exec -it saas-pos-mysql-db mysql -u root -p
 root
 ```
 
+### Schema design
+
+```shell
+https://app.eraser.io/workspace/9n9DiRjGqNB2LPjV5IOh?diagram=zr4EsE6GvrSx5F-okKjdI
+```
+
+![img.png](img.png)
+
 Base URL: `api/v2`
 
 ---
