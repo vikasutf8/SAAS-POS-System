@@ -34,7 +34,6 @@ public class Refund {
     // Refund belongs to a ShiftReport
     @ManyToOne
     @JsonIgnoreProperties
-    @JoinColumn(name = "shift_report_id")
     private ShiftReport shiftReport;
 
     // Cashier who processed refund

@@ -38,8 +38,24 @@ public class ShiftReport {
     @JoinColumn(name = "cashier_id")
     private User cashier;
 
+    @ManyToOne
+    @JoinColumn(name="branch_id")
+    private Branch branch;
 
-    @OneToMany(mappedBy = "shiftReport")
+    @Transient
+    private List<PaymentSummery> paymentSummeries;
+
+
+    @OneToMany
+    private List<Product> topSellingProducts;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Order> recentOrders;
+
+
+
+
+    @OneToMany(mappedBy = "shiftReport", cascade = CascadeType.ALL) // mapped by donot create a sperate table
     private List<Refund> refunds;
 
     private LocalDateTime createdAt;
