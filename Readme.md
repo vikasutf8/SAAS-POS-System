@@ -64,6 +64,10 @@ Base URL: `api/v2`
 ---
 
 ## Auth APIs
+POSTMAN URI [Req to access]
+```shell
+https://crimson-comet-847628.postman.co/workspace/springBoot-fitness~3624bf6f-c3b5-4845-b04e-6d7f7fcd62fc/collection/25455646-5af24c3a-29fb-4d4a-b20e-681bdb72e7a0?action=share&source=copy-link&creator=25455646
+```
 
 Base Path: `api/v2/auth`
 
@@ -210,6 +214,19 @@ Base Path: `api/v2/user/`
   "createdAt": "2025-01-01T00:00:00",
   "updatedAt": "2025-01-01T00:00:00",
   "lastLogin": "2025-01-01T00:00:00"
+},
+{
+"id": 3,
+"fullName": "Arya",
+"password": null,
+"phone": "9983340545",
+"email": "arya1889@gmail.com",
+"storeId": null,
+"branchId": null,
+"role": "ROLE_CLIENT",
+"createdAt": "2026-03-11T21:43:57.242135",
+"updatedAt": "2026-03-11T22:02:27.089861",
+"lastLogin": "2026-03-11T22:02:27.061277"
 }
 ```
 

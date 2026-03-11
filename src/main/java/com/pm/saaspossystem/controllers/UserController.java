@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v2/user/")
+@RequestMapping("api/v2/user")
 public class UserController {
 
     private final UserService userService;
@@ -34,7 +34,8 @@ public class UserController {
     }
 
     // ✅ Get user by ID (ADMIN only)
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id)
             throws UserExceptions {

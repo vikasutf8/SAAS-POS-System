@@ -2,6 +2,7 @@ package com.pm.saaspossystem.services.implementions;
 
 import com.pm.saaspossystem.configurations.JwtProvider;
 import com.pm.saaspossystem.exceptions.UserExceptions;
+import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.repository.UserRepository;
@@ -40,14 +41,7 @@ public class UserServiceImplmentions implements UserService {
 
         // ✅ Map entity -> DTO
 
-        return UserDto.builder()
-                .id(user.getId())
-                .fullName(user.getFullName())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .role(user.getRole())
-                .lastLogin(user.getLastLogin())
-                .build();
+        return UserMapper.toDto(user);
 
     }
 
@@ -66,7 +60,7 @@ public class UserServiceImplmentions implements UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserExceptions("User not found"));
 
-        return mapToDto(user);
+        return UserMapper.toDto(user);
     }
 
     @Override
@@ -74,7 +68,7 @@ public class UserServiceImplmentions implements UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserExceptions("User not found"));
 
-        return mapToDto(user);
+        return UserMapper.toDto(user);
     }
 
     @Override
@@ -82,7 +76,7 @@ public class UserServiceImplmentions implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserExceptions("User not found"));
 
-        return mapToDto(user);
+        return UserMapper.toDto(user);
     }
 
     @Override
@@ -90,7 +84,7 @@ public class UserServiceImplmentions implements UserService {
         List<User> users = userRepository.findAll();
 
         return users.stream()
-                .map(this::mapToDto)
+                .map(UserMapper::toDto)
                 .toList();
     }
 
