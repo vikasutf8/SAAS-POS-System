@@ -75,13 +75,22 @@ Base Path: `api/v2/auth`
   "fullName": "string (required, max 100)",
   "password": "string (required, min 8, max 100)",
   "phone": "string (required, 10-15 digits)",
-  "email": "string (required, valid email)",
+  "email": "string (required, valid emaiAdmin registration is not allowed.l)",
   "role": "ROLE_ADMIN | ROLE_STORE_MANAGER | ROLE_BRANCH_MANAGER | ROLE_CASHIER | ROLE_CLIENT (required)",
   "storeId": "number (optional)",
   "branchId": "number (optional)"
+},
+{
+  "fullName": "Arya",
+  "password": "StrongPass123",
+  "phone": "9983340545",
+  "email": "arya1889@gmail.com",
+  "storeId": 1, //should be present already 
+  "branchId": 2, // should be present already 
+  "role": "ROLE_CLIENT" // not Role_admin
 }
 ```
-
+- NOTE : ROLE_ADMIN :- Admin registration is not allowed.
 **Response** (`AuthResponse`):
 ```json
 {
@@ -99,9 +108,32 @@ Base Path: `api/v2/auth`
     "updatedAt": "2025-01-01T00:00:00",
     "lastLogin": "2025-01-01T00:00:00"
   }
+},
+
+{
+  "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFyeWExODg5QGdtYWlsLmNvbSIsImF1dGhvcml0aWVzIjoiUk9MRV9DTElFTlQiLCJpYXQiOjE3NzMyNDU2MzcsImV4cCI6MTc3MzI0OTIzN30.-B1UJrjmeXfVblrrBJFRdsOMlk6G4q4RZjUYmE7DZWA",
+  "message": "User registered successfully",
+  "user": {
+    "id": 3,
+    "fullName": "Arya",
+    "password": null,
+    "phone": "9983340545",
+    "email": "arya1889@gmail.com",
+    "storeId": null,
+    "branchId": null,
+    "role": "ROLE_CLIENT",
+    "createdAt": "2026-03-11T21:43:57.242135",
+    "updatedAt": null, // why are NULL
+    "lastLogin": null
+  }
 }
 ```
 
+[IMPORTANT]
+Event	createdAt	updatedAt	lastLogin
+Signup	now	null	null
+First Login	same	null	now
+Profile Update	same	now	lastLogin
 ---
 
 ### POST `/login` - Login user

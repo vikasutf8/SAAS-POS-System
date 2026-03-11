@@ -66,4 +66,15 @@ public class User {
     private LocalDateTime updatedAt;
 
     private LocalDateTime lastLogin;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
 }

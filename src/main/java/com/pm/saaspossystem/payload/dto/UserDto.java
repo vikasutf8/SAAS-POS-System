@@ -2,12 +2,16 @@ package com.pm.saaspossystem.payload.dto;
 
 import com.pm.saaspossystem.domain.UserRole;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class UserDto {
     private Long id;
@@ -16,8 +20,8 @@ public class UserDto {
     @Size(max = 100)
     private String fullName;
 
-    @NotBlank(message = "Password is required")
-    @Size(max = 100, min = 8)
+//    @NotBlank(message = "Password is required")
+//    @Size(max = 100, min = 8)
     private String password;
 
     @NotBlank(message = "Phone is required")

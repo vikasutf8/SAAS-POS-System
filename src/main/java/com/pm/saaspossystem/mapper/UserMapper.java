@@ -44,11 +44,12 @@ public class UserMapper {
         return User.builder()
                 .id(dto.getId())
                 .fullName(dto.getFullName())
+                .password(dto.getPassword())
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
                 .role(dto.getRole())
-                .createdAt(dto.getCreatedAt())
-                .updatedAt(dto.getUpdatedAt())
+//                .createdAt(dto.getCreatedAt())
+//                .updatedAt(dto.getUpdatedAt())
                 .lastLogin(dto.getLastLogin())
                 .build();
     }

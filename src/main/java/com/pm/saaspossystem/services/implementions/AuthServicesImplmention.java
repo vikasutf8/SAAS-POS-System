@@ -3,6 +3,7 @@ package com.pm.saaspossystem.services.implementions;
 import com.pm.saaspossystem.configurations.JwtProvider;
 import com.pm.saaspossystem.domain.UserRole;
 import com.pm.saaspossystem.exceptions.UserExceptions;
+import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.payload.response.AuthResponse;
@@ -46,13 +47,9 @@ public class AuthServicesImplmention implements AuthServices {
         }
 
         // ✅ 3. Create new user
-        User newUser = User.builder()
-                .fullName(userDto.getFullName())
-                .email(userDto.getEmail())
-                .phone(userDto.getPhone())
-                .password(passwordEncoder.encode(userDto.getPassword())) // 🔐 encode
-                .role(userDto.getRole())
-                .build();
+        User newUser = UserMapper.toEntity(userDto);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+
 
         User savedUser = userRepository.save(newUser);
 
@@ -70,13 +67,7 @@ public class AuthServicesImplmention implements AuthServices {
         String token = jwtProvider.generateAccessToken(authentication);
 
         // ✅ 7. Map to DTO (manual for now)
-        UserDto responseUser = UserDto.builder()
-                .id(savedUser.getId())
-                .fullName(savedUser.getFullName())
-                .email(savedUser.getEmail())
-                .phone(savedUser.getPhone())
-                .role(savedUser.getRole())
-                .build();
+        UserDto responseUser = UserMapper.toDto(savedUser);
 
         // ✅ 8. Return AuthResponse
         return AuthResponse.builder()
