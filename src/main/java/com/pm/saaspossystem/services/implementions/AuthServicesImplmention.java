@@ -98,13 +98,7 @@ public class AuthServicesImplmention implements AuthServices {
         userRepository.save(user);
 
         // ✅ 6. Map to DTO (without password!)
-        UserDto responseUser = UserDto.builder()
-                .id(user.getId())
-                .fullName(user.getFullName())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .role(user.getRole())
-                .build();
+        UserDto responseUser = UserMapper.toDto(user);
 
         // ✅ 7. Return response
         return AuthResponse.builder()

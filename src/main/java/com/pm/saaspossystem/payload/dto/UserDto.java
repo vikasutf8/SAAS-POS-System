@@ -16,16 +16,12 @@ import java.time.LocalDateTime;
 public class UserDto {
     private Long id;
 
-    @NotBlank(message = "Full name is required")
-    @Size(max = 100)
     private String fullName;
 
 //    @NotBlank(message = "Password is required")
 //    @Size(max = 100, min = 8)
     private String password;
 
-    @NotBlank(message = "Phone is required")
-    @Pattern(regexp = "^[0-9]{10,15}$", message = "Invalid phone number")
     private String phone;
 
     @NotBlank(message = "Email is required")
@@ -37,7 +33,6 @@ public class UserDto {
     private Long branchId;
 
 
-    @NotNull(message = "Role is required")
     private UserRole role;
 
     private LocalDateTime createdAt;

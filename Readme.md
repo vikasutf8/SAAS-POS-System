@@ -111,7 +111,7 @@ Base Path: `api/v2/auth`
 },
 
 {
-  "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFyeWExODg5QGdtYWlsLmNvbSIsImF1dGhvcml0aWVzIjoiUk9MRV9DTElFTlQiLCJpYXQiOjE3NzMyNDU2MzcsImV4cCI6MTc3MzI0OTIzN30.-B1UJrjmeXfVblrrBJFRdsOMlk6G4q4RZjUYmE7DZWA",
+  "jwt": "eyJhbGc......rrBJFRdsOMlk6G4q4RZjUYmE7DZWA",
   "message": "User registered successfully",
   "user": {
     "id": 3,
@@ -143,6 +143,10 @@ Profile Update	same	now	lastLogin
 {
   "email": "string (required)",
   "password": "string (required)"
+},
+{
+  "email": "arya1889@gmail.com",
+  "password": "StrongPass123"
 }
 ```
 
@@ -163,6 +167,23 @@ Profile Update	same	now	lastLogin
     "updatedAt": "2025-01-01T00:00:00",
     "lastLogin": "2025-01-01T00:00:00"
   }
+},
+{
+"jwt": "ey........4g8pfp-npl2WSe9aSU9hbLLOwE",
+"message": "Login successful",
+"user": {
+"id": 3,
+"fullName": "Arya",
+"password": null,
+"phone": "9983340545",
+"email": "arya1889@gmail.com",
+"storeId": null,
+"branchId": null,
+"role": "ROLE_CLIENT",
+"createdAt": "2026-03-11T21:43:57.242135",
+"updatedAt": "2026-03-11T22:02:27.089861",
+"lastLogin": "2026-03-11T22:02:27.061277"
+}
 }
 ```
 
