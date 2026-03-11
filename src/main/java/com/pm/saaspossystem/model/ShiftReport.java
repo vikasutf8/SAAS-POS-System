@@ -60,6 +60,7 @@ public class ShiftReport {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+//    private LocalDateTime shiftEnd;
 
 
     @PrePersist

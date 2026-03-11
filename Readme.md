@@ -3,10 +3,34 @@
 ## Database 
 ### Docker
 ```shell
+docker-compose up -d
 docker exec -it saas-pos-mysql-db mysql -u root -p
-
 root
+show databases;
+use saas-pos
+show tables;
+
+
 ```
++------------------------------------+
+| Tables_in_saas-pos                 |
++------------------------------------+
+| branch_working_days                |
+| branches                           |
+| categories                         |
+| customers                          |
+| inventories                        |
+| order_items                        |
+| orders                             |
+| products                           |
+| refunds                            |
+| shift_reports                      |
+| shift_reports_recent_orders        |
+| shift_reports_top_selling_products |
+| stores                             |
+| users                              |
++------------------------------------+
+
 
 ### Schema design
 
