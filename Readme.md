@@ -295,7 +295,6 @@ Base Path: `api/v2/store`
 **Request Body** (`StoreDto`):
 ```json
 {
-  "branch": "string (required)",
   "brand": "string (required)",
   "storeType": "string (required)",
   "description": "string (optional)",

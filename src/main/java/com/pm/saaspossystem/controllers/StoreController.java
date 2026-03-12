@@ -9,10 +9,12 @@ import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.services.StoreServices;
 import com.pm.saaspossystem.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v2/store")
 @RequiredArgsConstructor
@@ -27,7 +29,8 @@ public class StoreController {
     public StoreDto createStore(@RequestBody StoreDto storeDto) throws UserExceptions {
 
         UserDto currentUser = userService.getCurrentUser();
-        return storeServices.createStore(storeDto, UserMapper.toEntity(currentUser));
+        log.info("user crrent "+currentUser);
+        return storeServices.createStore(storeDto, currentUser);
     }
 
     // =========================================

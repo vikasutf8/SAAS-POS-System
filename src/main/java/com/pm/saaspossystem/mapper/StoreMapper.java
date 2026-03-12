@@ -49,7 +49,7 @@ public class StoreMapper {
                 .brand(dto.getBrand())
                 .storeType(dto.getStoreType())
                 .description(dto.getDescription())
-                .status(dto.getStatus()) // usually ignored on create
+                .status(dto.getStatus()) // usually ignored on createfd
                 .storeAdmin(storeAdmin)
                 .contact(toContactEntity(dto.getContact()))
                 .createdAt(dto.getCreatedAt())

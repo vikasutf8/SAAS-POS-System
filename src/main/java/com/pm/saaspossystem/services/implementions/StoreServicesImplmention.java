@@ -3,14 +3,15 @@ package com.pm.saaspossystem.services.implementions;
 import com.pm.saaspossystem.domain.StoreStatus;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.StoreMapper;
+import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.Store;
-import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.StoreDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.repository.StoreRepository;
 import com.pm.saaspossystem.services.StoreServices;
 import com.pm.saaspossystem.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StoreServicesImplmention implements StoreServices {
@@ -27,10 +28,12 @@ public class StoreServicesImplmention implements StoreServices {
     private final UserService userService;
 
     @Override
-    public StoreDto createStore(StoreDto storeDto, User user) {
-        Store store = StoreMapper.toEntity(storeDto,user);
+    public StoreDto createStore(StoreDto storeDto, UserDto user) {
 
-        return StoreMapper.toDto(storeRepository.save(store));
+        Store store = StoreMapper.toEntity(storeDto, UserMapper.toEntity(user));
+        log.info(STR."store entity \{store}");
+        Store savedStore =storeRepository.save(store);
+        return StoreMapper.toDto(savedStore);
     }
 
     @Override

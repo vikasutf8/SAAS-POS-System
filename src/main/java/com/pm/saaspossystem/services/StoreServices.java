@@ -3,15 +3,15 @@ package com.pm.saaspossystem.services;
 import com.pm.saaspossystem.domain.StoreStatus;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.model.Store;
-import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.StoreDto;
+import com.pm.saaspossystem.payload.dto.UserDto;
 
 import java.util.List;
 
 public interface StoreServices
 {
 
-    StoreDto createStore(StoreDto storeDto, User user);
+    StoreDto createStore(StoreDto storeDto, UserDto user);
     StoreDto getStoreById(Long storeId) throws Exception;
     List<StoreDto> getAllStores();
     Store getStoreByAdmin() throws UserExceptions;
