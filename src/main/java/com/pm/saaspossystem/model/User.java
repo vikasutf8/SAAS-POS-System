@@ -46,7 +46,8 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToOne
+//    @OneToOne  --- bi-directional relationship is already defined in Store entity
+    @OneToOne(mappedBy = "storeAdmin", cascade = CascadeType.ALL)
     private Store store;
 
 

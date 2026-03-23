@@ -126,6 +126,7 @@ public class StoreServicesImplmention implements StoreServices {
         if(currentUser ==null){
             throw  new UserExceptions("User havn't permission to access");
         }
+        log.info(STR."current user \{currentUser}");
         Long storeId =currentUser.getStoreId();
         return  StoreMapper.toDto(storeRepository.findById(storeId).orElseThrow(()-> new UserExceptions("Store not found")));
     }

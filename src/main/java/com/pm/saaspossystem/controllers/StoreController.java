@@ -2,7 +2,6 @@ package com.pm.saaspossystem.controllers;
 
 import com.pm.saaspossystem.domain.StoreStatus;
 import com.pm.saaspossystem.exceptions.UserExceptions;
-import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.Store;
 import com.pm.saaspossystem.payload.dto.StoreDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
@@ -27,9 +26,9 @@ public class StoreController {
     // =========================================
     @PostMapping
     public StoreDto createStore(@RequestBody StoreDto storeDto) throws UserExceptions {
-
+//        log.info(   "Creating store with data: " + storeDto);
         UserDto currentUser = userService.getCurrentUser();
-        log.info("user crrent "+currentUser);
+//        log.info("user crrent "+currentUser);
         return storeServices.createStore(storeDto, currentUser);
     }
 

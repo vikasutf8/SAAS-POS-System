@@ -304,6 +304,24 @@ Base Path: `api/v2/store`
     "email": "string"
   }
 }
+
+
+
+```
+
+```shell
+{
+  "brand": "Arya Retail",
+  "storeAdminId": 3,
+  "storeType": "RETAIL",
+  "description": "Electronics and mobile accessories store",
+  "status": "ACTIVE",
+  "contact": {
+    "phone": "9983340125",
+    "email": "support@aryaretail.com",
+    "address": "Jaipur, Rajasthan, India"
+  }
+}
 ```
 
 **Response** (`StoreDto`):
@@ -322,6 +340,24 @@ Base Path: `api/v2/store`
   },
   "createdAt": "2025-01-01T00:00:00",
   "updatedAt": "2025-01-01T00:00:00"
+}
+```
+
+```shell
+{
+    "id": 1,
+    "brand": "Arya Retail",
+    "storeAdminId": 3,
+    "storeType": "RETAIL",
+    "description": "Electronics and mobile accessories store",
+    "status": "PENDING",
+    "contact": {
+        "address": "Jaipur, Rajasthan, India",
+        "phone": "9983340125",
+        "email": "support@aryaretail.com"
+    },
+    "createdAt": "2026-03-23T13:53:31.865488",
+    "updatedAt": null
 }
 ```
 
@@ -346,6 +382,36 @@ Base Path: `api/v2/store`
 **Headers**: `Authorization: Bearer <jwt>`
 
 **Response** (`Store`): Full Store entity object.
+```shell
+
+{
+    "id": 1,
+    "brand": "Arya Retail",
+    "storeAdmin": {
+        "id": 3,
+        "fullName": "Arya",
+        "password": "$2a$10$o6Cei6e7o1v0eySknXHB5.s92CIyg24VxBCba4kWQOHHPhVR49DYW",
+        "phone": "9983340545",
+        "email": "arya1889@gmail.com",
+        "store": null,
+        "branch": null,
+        "role": "ROLE_CLIENT",
+        "createdAt": "2026-03-11T21:43:57.242135",
+        "updatedAt": "2026-03-23T13:45:39.09478",
+        "lastLogin": "2026-03-23T13:45:39.075244"
+    },
+    "storeType": "RETAIL",
+    "description": "Electronics and mobile accessories store",
+    "status": "PENDING",
+    "contact": {
+        "address": "Jaipur, Rajasthan, India",
+        "phone": "9983340125",
+        "email": "support@aryaretail.com"
+    },
+    "createdAt": "2026-03-23T13:53:31.865488",
+    "updatedAt": null
+}
+```
 
 ---
 
@@ -354,7 +420,23 @@ Base Path: `api/v2/store`
 **Headers**: `Authorization: Bearer <jwt>`
 
 **Response** (`StoreDto`): Same as StoreDto above.
-
+```shell
+{
+    "id": 5,
+    "brand": "Aryaans Retail",
+    "storeAdminId": 5,
+    "storeType": "RETAIL",
+    "description": "Electronics and mobile accessories store",
+    "status": "PENDING",
+    "contact": {
+        "address": "Jaipur, Rajasthan, India",
+        "phone": "9983340125",
+        "email": "support@aryaretail.com"
+    },
+    "createdAt": "2026-03-23T14:20:36.723342",
+    "updatedAt": null
+}
+```
 ---
 
 ### PUT `/{id}` - Update store
