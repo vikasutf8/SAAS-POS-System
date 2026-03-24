@@ -17,7 +17,8 @@ uniqueConstraints = {
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 public class Customer {
 
     @Id

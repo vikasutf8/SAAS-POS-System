@@ -6,6 +6,7 @@ import com.pm.saaspossystem.services.BranchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class BranchController {
     // CREATE BRANCH
     // =========================================
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public ResponseEntity<BranchDto> createBranch(
             @RequestBody BranchDto branchDto) throws UserExceptions {
 
@@ -32,6 +34,7 @@ public class BranchController {
     // UPDATE BRANCH
     // =========================================
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<BranchDto> updateBranch(
             @PathVariable Long id,
             @RequestBody BranchDto branchDto) throws UserExceptions {
@@ -45,6 +48,7 @@ public class BranchController {
     // DELETE BRANCH
     // =========================================
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public ResponseEntity<String> deleteBranch(@PathVariable Long id) {
 
         branchService.deleteBranch(id);
@@ -56,6 +60,7 @@ public class BranchController {
     // GET ALL BRANCHES BY STORE
     // =========================================
     @GetMapping("/store/{storeId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<List<BranchDto>> getAllBranchesByStore(
             @PathVariable Long storeId) {
 
@@ -69,6 +74,7 @@ public class BranchController {
     // GET BRANCH BY ID
     // =========================================
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<BranchDto> getBranchById(
             @PathVariable Long id) {
 

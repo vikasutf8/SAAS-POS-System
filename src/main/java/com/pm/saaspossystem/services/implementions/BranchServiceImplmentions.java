@@ -31,17 +31,17 @@ public class BranchServiceImplmentions implements BranchService {
     @Override
     public BranchDto createBranch(BranchDto branchDto) throws UserExceptions {
         UserDto currentUser = userService.getCurrentUser();
-        log.info("Current user: {}", currentUser);
+//        log.info("Current user: {}", currentUser);
         Store store = storeRepository.findByStoreAdminId(currentUser.getId()); // i haven;t use bydrirectional
-        log.info("Store found for current user: {}", store);
+//        log.info("Store found for current user: {}", store);
         Branch branch = BranchMapper.toEntity(branchDto, store, UserMapper.toEntity(currentUser));
 
         Branch savedBranch = branchRepository.save(branch);
 
 
         // set barnch in that
-        currentUser.setBranchId(savedBranch.getId());
-        userRepository.save(UserMapper.toEntity(currentUser));
+//        currentUser.setBranchId(savedBranch.getId());
+//        userRepository.save(UserMapper.toEntity(currentUser));
 
         return BranchMapper.toDto(savedBranch);
     }

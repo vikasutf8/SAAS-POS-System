@@ -519,35 +519,54 @@ Base Path: `api/v2/branch`
 ```json
 {
   "id": 1,
-  "name": "Main Branch",
+  "name": "Main Branch-0000",
   "address": "123 MG Road, Bangalore",
-  "phone": "+91-9876543210",
-  "email": "mainbranch@example.com",
+  "phone": "+91-98765433440",
+  "email": "mainbranch1111@example.com",
   "workingDays": [
     "MONDAY",
-    "TUESDAY",
-    "WEDNESDAY",
-    "THURSDAY",
-    "FRIDAY"
+    "TUESDAY"
   ],
   "openTime": "09:00:00",
   "closeTime": "21:00:00",
   "storeId": 1,
-  "managerId": 3,
-  "createdAt": "2026-03-24T10:06:34.875467",
+  "managerId": 2,
+  "createdAt": "2026-03-24T20:51:34.88703",
   "updatedAt": null
 }
 ```
 
 ---
 
-### PUT `/{id}` - Update branch
+### PATCH `/{id}` - Update branch
 
 **Path Params**: `id` (Long) - Branch ID
 
 **Request Body** (`BranchDto`): Same as create request.
 
-**Response** (`BranchDto`): Updated branch object.
+**Response** (`BranchDto`): 
+```shell
+{
+    "id": 1,
+    "name": "Main Branch-0000",
+    "address": "123 MG Road, Bangalore",
+    "phone": "+91-98765433440",
+    "email": "mainbranch1111@example.com",
+    "workingDays": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY"
+    ],
+    "openTime": "09:00:00",
+    "closeTime": "21:00:00",
+    "storeId": 1,
+    "managerId": 2,
+    "createdAt": "2026-03-24T20:51:34.88703",
+    "updatedAt": "2026-03-24T20:59:19.419873"
+}
+```
 
 ---
 
@@ -568,16 +587,23 @@ Base Path: `api/v2/branch`
 [
   {
     "id": 1,
-    "name": "string",
-    "address": "string",
-    "phone": "string",
-    "email": "string",
-    "workingDays": ["MONDAY"],
+    "name": "Main Branch-0000",
+    "address": "123 MG Road, Bangalore",
+    "phone": "+91-98765433440",
+    "email": "mainbranch1111@example.com",
+    "workingDays": [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY"
+    ],
     "openTime": "09:00:00",
     "closeTime": "21:00:00",
     "storeId": 1,
-    "createdAt": "2025-01-01T00:00:00",
-    "updatedAt": "2025-01-01T00:00:00"
+    "managerId": 2,
+    "createdAt": "2026-03-24T20:51:34.88703",
+    "updatedAt": "2026-03-24T20:59:19.419873"
   }
 ]
 ```

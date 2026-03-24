@@ -3,10 +3,7 @@ package com.pm.saaspossystem.model;
 import com.pm.saaspossystem.domain.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,7 +12,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,9 +49,12 @@ public class User {
     private Store store;
 
 
-    @ManyToOne
-    @JoinColumn(name = "branch_id")
+
+    @OneToOne(mappedBy = "manager", cascade = CascadeType.ALL)
     private Branch branch;
+
+//    @OneToOne(mappedBy = "manager", cascade = CascadeType.ALL)
+//    private Branch branchManager;
 
     @NotNull(message = "Role is required")
     @Enumerated(EnumType.STRING)
