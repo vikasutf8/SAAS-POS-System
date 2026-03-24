@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface BranchRepository extends JpaRepository<Branch,Long> {
 List<Branch> findByStoreId(Long storeId);
+  Branch  findByNameAndStoreId(String name, Long storeId);
 }
 

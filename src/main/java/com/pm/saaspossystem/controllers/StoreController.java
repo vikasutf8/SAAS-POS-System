@@ -9,6 +9,7 @@ import com.pm.saaspossystem.services.StoreServices;
 import com.pm.saaspossystem.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v2/store")
 @RequiredArgsConstructor
+//@PreAuthorize("hasRole('ADMIN')")
 public class StoreController {
     private final StoreServices storeServices;
     private final UserService userService;
@@ -25,6 +27,7 @@ public class StoreController {
     // Create Store
     // =========================================
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public StoreDto createStore(@RequestBody StoreDto storeDto) throws UserExceptions {
 //        log.info(   "Creating store with data: " + storeDto);
         UserDto currentUser = userService.getCurrentUser();

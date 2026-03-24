@@ -59,4 +59,15 @@ public class UserController {
 
         return ResponseEntity.ok(userService.getAllUsers());
     }
+
+
+    @PatchMapping("/update")
+    public ResponseEntity<UserDto> updateUser(
+            @RequestBody UserDto userDto, Long id) throws UserExceptions  {
+
+        return ResponseEntity.ok(userService.updateUser(id,userDto));
+    }
+
+
+
 }

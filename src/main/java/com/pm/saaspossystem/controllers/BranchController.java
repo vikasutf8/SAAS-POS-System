@@ -31,7 +31,7 @@ public class BranchController {
     // =========================================
     // UPDATE BRANCH
     // =========================================
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<BranchDto> updateBranch(
             @PathVariable Long id,
             @RequestBody BranchDto branchDto) throws UserExceptions {

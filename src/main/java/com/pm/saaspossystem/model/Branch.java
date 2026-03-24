@@ -96,7 +96,7 @@ public class Branch {
     private Store store;
 
     // One branch has one manager
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     @JoinColumn(name = "manager_id", unique = true)
     private User manager;
 

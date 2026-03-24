@@ -90,6 +90,17 @@ log.info(STR."current user email \{email}");
                 .toList();
     }
 
+    @Override
+    public UserDto updateUser(Long id, UserDto userDto) throws UserExceptions {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserExceptions("User not found"));
+
+//       existingUser.setStore(userDto.getStoreId());
+        User updatedUser = userRepository.save(existingUser);
+
+        return UserMapper.toDto(updatedUser);
+    }
+
 
     private UserDto mapToDto(User user) {
         return UserDto.builder()

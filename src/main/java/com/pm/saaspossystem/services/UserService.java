@@ -1,7 +1,6 @@
 package com.pm.saaspossystem.services;
 
 import com.pm.saaspossystem.exceptions.UserExceptions;
-import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.UserDto;
 
 import java.util.List;
@@ -13,4 +12,5 @@ public interface UserService {
     UserDto getUserByEmail(String email) throws UserExceptions;
     UserDto getUserById(Long id) throws UserExceptions;
     List<UserDto> getAllUsers();
+    UserDto updateUser(Long id, UserDto userDto) throws UserExceptions;
 }

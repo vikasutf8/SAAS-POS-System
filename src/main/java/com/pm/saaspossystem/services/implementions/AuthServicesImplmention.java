@@ -1,7 +1,6 @@
 package com.pm.saaspossystem.services.implementions;
 
 import com.pm.saaspossystem.configurations.JwtProvider;
-import com.pm.saaspossystem.domain.UserRole;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.User;
@@ -42,9 +41,9 @@ public class AuthServicesImplmention implements AuthServices {
         }
 
         // ✅ 2. Prevent manual ADMIN creation (important security rule)
-        if (userDto.getRole() == UserRole.ROLE_ADMIN) {
-            throw new UserExceptions("Admin registration is not allowed.");
-        }
+//        if (userDto.getRole() == UserRole.ROLE_ADMIN) {
+//            throw new UserExceptions("Admin registration is not allowed.");
+//        }
 
         // ✅ 3. Create new user
         User newUser = UserMapper.toEntity(userDto);

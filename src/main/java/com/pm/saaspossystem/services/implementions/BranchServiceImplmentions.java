@@ -61,11 +61,22 @@ public class BranchServiceImplmentions implements BranchService {
         Branch branch = branchRepository.findById(id)
                 .orElseThrow(() -> new UserExceptions("Branch not found"));
 
+
+
         // 2️⃣ Get current logged-in user
         UserDto currentUser = userService.getCurrentUser();
 
         // 3️⃣ Get store of current admin
         Store store = storeRepository.findByStoreAdminId(currentUser.getId());
+
+//        Optional<Branch> existingBranch =
+//                branchRepository.findByNameAndStoreId(branchDto.getName(), store.getId());
+//
+//        if (existingBranch.isPresent() &&
+//                !existingBranch.get().getId().equals(branchId)) {
+//
+//            throw new RuntimeException("Branch with same name already exists in this store");
+//        }
 
 //        if (store == null) {
 //            throw new UserExceptions("Store not found for current admin");
