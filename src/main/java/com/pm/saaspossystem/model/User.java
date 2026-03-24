@@ -51,7 +51,8 @@ public class User {
     private Store store;
 
 
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
     private Branch branch;
 
     @NotNull(message = "Role is required")

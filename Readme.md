@@ -499,14 +499,19 @@ Base Path: `api/v2/branch`
 **Request Body** (`BranchDto`):
 ```json
 {
-  "name": "string",
-  "address": "string",
-  "phone": "string",
-  "email": "string",
-  "workingDays": ["MONDAY", "TUESDAY", "WEDNESDAY"],
+  "name": "Main Branch",
+  "address": "123 MG Road, Bangalore",
+  "phone": "+91-9876543210",
+  "email": "mainbranch@example.com",
+  "workingDays": [
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY"
+  ],
   "openTime": "09:00:00",
-  "closeTime": "21:00:00",
-  "storeId": 1
+  "closeTime": "21:00:00"
 }
 ```
 
@@ -514,18 +519,23 @@ Base Path: `api/v2/branch`
 ```json
 {
   "id": 1,
-  "name": "string",
-  "address": "string",
-  "phone": "string",
-  "email": "string",
-  "workingDays": ["MONDAY", "TUESDAY"],
+  "name": "Main Branch",
+  "address": "123 MG Road, Bangalore",
+  "phone": "+91-9876543210",
+  "email": "mainbranch@example.com",
+  "workingDays": [
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY"
+  ],
   "openTime": "09:00:00",
   "closeTime": "21:00:00",
-  "store": {},
   "storeId": 1,
-  "manager": {},
-  "createdAt": "2025-01-01T00:00:00",
-  "updatedAt": "2025-01-01T00:00:00"
+  "managerId": 3,
+  "createdAt": "2026-03-24T10:06:34.875467",
+  "updatedAt": null
 }
 ```
 

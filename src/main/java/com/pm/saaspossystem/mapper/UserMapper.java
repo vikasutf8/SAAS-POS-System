@@ -48,6 +48,7 @@ public class UserMapper {
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
                 .role(dto.getRole())
+//                .store(dto.
 //                .createdAt(dto.getCreatedAt())
 //                .updatedAt(dto.getUpdatedAt())
                 .lastLogin(dto.getLastLogin())

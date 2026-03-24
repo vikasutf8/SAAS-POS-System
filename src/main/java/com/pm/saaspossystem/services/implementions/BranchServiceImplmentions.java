@@ -10,28 +10,38 @@ import com.pm.saaspossystem.payload.dto.BranchDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.repository.BranchRepository;
 import com.pm.saaspossystem.repository.StoreRepository;
+import com.pm.saaspossystem.repository.UserRepository;
 import com.pm.saaspossystem.services.BranchService;
 import com.pm.saaspossystem.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BranchServiceImplmentions implements BranchService {
     private final BranchRepository branchRepository;
     private final StoreRepository storeRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     public BranchDto createBranch(BranchDto branchDto) throws UserExceptions {
         UserDto currentUser = userService.getCurrentUser();
-        Store store = storeRepository.findByStoreAdminId(currentUser.getId());
-
+        log.info("Current user: {}", currentUser);
+        Store store = storeRepository.findByStoreAdminId(currentUser.getId()); // i haven;t use bydrirectional
+        log.info("Store found for current user: {}", store);
         Branch branch = BranchMapper.toEntity(branchDto, store, UserMapper.toEntity(currentUser));
 
         Branch savedBranch = branchRepository.save(branch);
+
+
+        // set barnch in that
+        currentUser.setBranchId(savedBranch.getId());
+        userRepository.save(UserMapper.toEntity(currentUser));
 
         return BranchMapper.toDto(savedBranch);
     }
