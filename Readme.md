@@ -719,17 +719,18 @@ Base Path: `api/v2/categories`
 **Request Body** (`CategoryDto`):
 ```json
 {
-  "name": "string",
-  "storeId": 1
+  "name":"Fastions"
 }
 ```
 
 **Response** (`CategoryDto`):
 ```json
 {
-  "id": 1,
-  "name": "string",
-  "storeId": 1
+  "id": 2,
+  "name": "Fastions",
+  "storeId": 1,
+  "createdAt": "2026-03-24T21:54:52.10756",
+  "updatedAt": "2026-03-24T21:54:52.107566"
 }
 ```
 
@@ -744,8 +745,17 @@ Base Path: `api/v2/categories`
 [
   {
     "id": 1,
-    "name": "string",
-    "storeId": 1
+    "name": "Electronics",
+    "storeId": 1,
+    "createdAt": "2026-03-24T21:54:26.429807",
+    "updatedAt": "2026-03-24T21:54:26.429818"
+  },
+  {
+    "id": 2,
+    "name": "Fastion",
+    "storeId": 1,
+    "createdAt": "2026-03-24T21:54:52.10756",
+    "updatedAt": "2026-03-24T21:54:52.107566"
   }
 ]
 ```
