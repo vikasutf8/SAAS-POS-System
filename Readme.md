@@ -629,38 +629,33 @@ Base Path: `api/v2/products`
 **Request Body** (`ProductDto`):
 ```json
 {
-  "name": "string",
-  "sku": "string",
-  "description": "string",
-  "mrp": 100.0,
-  "sellingPrice": 90.0,
-  "brand": "string",
-  "imageUri": "string",
-  "categoryId": 1,
-  "storeId": 1
+  "name": "Demim Jeam spuaker",
+  "sku": "IPH15-128-JEN_SPK",
+  "description": "Latest Apple iPhone with A16 chip",
+  "mrp": 8000,
+  "sellingPrice": 7500,
+  "brand": "Apple",
+  "imageUri": "https://example.com/images/iphone15.png",
+  "storeId": 1,
+  "categoryId": 2
 }
 ```
 
 **Response** (`ProductDto`):
 ```json
 {
-  "id": 1,
-  "name": "string",
-  "sku": "string",
-  "description": "string",
-  "mrp": 100.0,
-  "sellingPrice": 90.0,
-  "brand": "string",
-  "imageUri": "string",
-  "category": {
-    "id": 1,
-    "name": "string",
-    "storeId": 1
-  },
+  "id": 2,
+  "name": "Demim Jeam spuaker",
+  "sku": "IPH15-128-JEN_SPK",
+  "description": "Latest Apple iPhone with A16 chip",
+  "mrp": 8000.0,
+  "sellingPrice": 7500.0,
+  "brand": "Apple",
+  "imageUri": "https://example.com/images/iphone15.png",
   "storeId": 1,
-  "categoryId": 1,
-  "createdAt": "2025-01-01T00:00:00",
-  "updatedAt": "2025-01-01T00:00:00"
+  "categoryId": 2,
+  "createdAt": "2026-03-24T22:07:45.79708",
+  "updatedAt": null
 }
 ```
 
@@ -693,7 +688,38 @@ Base Path: `api/v2/products`
 **Path Params**: `storeId` (Long)
 
 **Response** (`List<ProductDto>`): Array of product objects.
-
+```shell
+[
+    {
+        "id": 1,
+        "name": "iPhone 15",
+        "sku": "IPH15-128-BLK",
+        "description": "Latest Apple iPhone with A16 chip",
+        "mrp": 80000.0,
+        "sellingPrice": 75000.0,
+        "brand": "Apple",
+        "imageUri": "https://example.com/images/iphone15.png",
+        "storeId": 1,
+        "categoryId": 1,
+        "createdAt": "2026-03-24T22:06:30.791294",
+        "updatedAt": null
+    },
+    {
+        "id": 2,
+        "name": "Demim Jeam spuaker",
+        "sku": "15-128-JEN_SPK",
+        "description": "Latest Deniem light blue",
+        "mrp": 8000.0,
+        "sellingPrice": 7500.0,
+        "brand": "Spyker",
+        "imageUri": "https://example.com/images/jenas03.png",
+        "storeId": 1,
+        "categoryId": 2,
+        "createdAt": "2026-03-24T22:07:45.79708",
+        "updatedAt": "2026-03-24T22:09:58.157634"
+    }
+]
+```
 ---
 
 ### GET `/search` - Search products
@@ -705,7 +731,10 @@ Base Path: `api/v2/products`
 | `keyword` | String | Search keyword |
 
 **Response** (`List<ProductDto>`): Array of matching product objects.
+```shell
 
+'http://localhost:8990/api/v2/products/search?storeId=1&keyword=128'
+```
 ---
 
 ## Category APIs
@@ -719,17 +748,18 @@ Base Path: `api/v2/categories`
 **Request Body** (`CategoryDto`):
 ```json
 {
-  "name": "string",
-  "storeId": 1
+  "name":"Fastions"
 }
 ```
 
 **Response** (`CategoryDto`):
 ```json
 {
-  "id": 1,
-  "name": "string",
-  "storeId": 1
+  "id": 2,
+  "name": "Fastions",
+  "storeId": 1,
+  "createdAt": "2026-03-24T21:54:52.10756",
+  "updatedAt": "2026-03-24T21:54:52.107566"
 }
 ```
 
@@ -744,8 +774,17 @@ Base Path: `api/v2/categories`
 [
   {
     "id": 1,
-    "name": "string",
-    "storeId": 1
+    "name": "Electronics",
+    "storeId": 1,
+    "createdAt": "2026-03-24T21:54:26.429807",
+    "updatedAt": "2026-03-24T21:54:26.429818"
+  },
+  {
+    "id": 2,
+    "name": "Fastion",
+    "storeId": 1,
+    "createdAt": "2026-03-24T21:54:52.10756",
+    "updatedAt": "2026-03-24T21:54:52.107566"
   }
 ]
 ```

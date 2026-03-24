@@ -5,6 +5,7 @@ import com.pm.saaspossystem.payload.dto.CategoryDto;
 import com.pm.saaspossystem.services.CategoryServices;
 import com.pm.saaspossystem.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v2/categories")
+@PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
 public class CategoryController {
     private final CategoryServices categoryServices;
     private final UserService userService;
@@ -20,6 +22,7 @@ public class CategoryController {
     // Create Category
     // =========================================
     @PostMapping
+
     public CategoryDto createCategory(@RequestBody CategoryDto categoryDto)
             throws UserExceptions, IllegalAccessException {
 

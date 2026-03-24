@@ -14,6 +14,7 @@ import com.pm.saaspossystem.repository.StoreRepository;
 import com.pm.saaspossystem.services.CategoryServices;
 import com.pm.saaspossystem.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CategoryServicesImplmention implements CategoryServices {
@@ -33,7 +35,13 @@ public class CategoryServicesImplmention implements CategoryServices {
     public CategoryDto createCategory(CategoryDto categoryDto) throws UserExceptions, IllegalAccessException {
         UserDto user =userService.getCurrentUser();
 
-       Store store = storeRepository.findById(categoryDto.getStoreId()).orElseThrow(() -> new UserExceptions("Store not Found"));
+
+        log.info(STR."user details\{user.getId()},\{user.getStoreId()}");
+
+
+       Store store = storeRepository.findById(user.getStoreId()).orElseThrow(() -> new UserExceptions("Store not Found"));
+       log.info(STR."store details\{store.getId()},\{store.getStoreAdmin().getId()}");
+
 
         Category category = Category.builder()
                 .name(categoryDto.getName())
@@ -42,7 +50,10 @@ public class CategoryServicesImplmention implements CategoryServices {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        checkAuthortize(UserMapper.toEntity(user), store);
+        log.info(STR."category details\{category.getStore()}");
+
+// TODO: check it later
+//        checkAuthortize(UserMapper.toEntity(user), store);
 
 
         // have to save
@@ -69,7 +80,9 @@ public class CategoryServicesImplmention implements CategoryServices {
 //                .orElseThrow(() ->
 //                        new UserExceptions("Category does not exist"));
 //A user from Store A could update Store B’s category ❌
-        checkAuthortize(UserMapper.toEntity(user), category.getStore());
+
+        ///TODO: update it later
+//        checkAuthortize(UserMapper.toEntity(user), category.getStore());
 
 //        // 3️⃣ Check store ownership (VERY IMPORTANT)
 //        if (!category.getStore().getId()
@@ -106,9 +119,11 @@ public class CategoryServicesImplmention implements CategoryServices {
         Boolean isManager = user.getRole().equals(UserRole.ROLE_STORE_MANAGER);
         Boolean isSameStoreManager = user.equals(store.getStoreAdmin());
 
-if(!(isAdmin && isSameStoreManager) && !isManager){
-    throw  new IllegalAccessException("Illegel Access");
-}
+        log.info(STR."isAdmin\{isAdmin}, isManager\{isManager}, isSameStoreManager\{isSameStoreManager}");
+
+        if(!(isAdmin && isSameStoreManager) && !isManager){
+            throw  new IllegalAccessException("Illegel Access");
+        }
 
     }
 }

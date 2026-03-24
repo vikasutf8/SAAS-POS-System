@@ -22,5 +22,5 @@ List<Product> findByStoreId(Long storeId);
        )
        """)
 List<Product> searchByKeyword(@Param("storeId") Long storeId,
-                              @Param("query") String keyword);
+                              @Param("keyword") String keyword);
 }
