@@ -22,8 +22,8 @@ TODO : api doc category controller
 
 
 ============================
-TODO: User with Authorization check
-TODO : store with all ....id should be added to user
-TODO: branch with all ....id should be added to user and store
+TODO: User with Authorization check --- checked done
+TODO : store with all ....id should be added to user -- done NOT IN user on side always (user is inverse side or store is owing side)
+TODO: branch with all ....id should be added to user and store  -- done NOT IN user on side always (user is inverse side or store is owing side)
 
 TODO: prodouct and category with store

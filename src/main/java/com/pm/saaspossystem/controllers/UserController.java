@@ -17,7 +17,6 @@ public class UserController {
 
     private final UserService userService;
 
-    // ✅ Get current logged-in user
     @GetMapping("/me")
     public ResponseEntity<UserDto> getCurrentUser() throws UserExceptions {
         return ResponseEntity.ok(userService.getCurrentUser());
@@ -33,9 +32,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserFromJwt(token));
     }
 
-    // ✅ Get user by ID (ADMIN only)
 //    @PreAuthorize("hasRole('ROLE_CLIENT')")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id)
             throws UserExceptions {
@@ -44,7 +42,7 @@ public class UserController {
     }
 
     // ✅ Get user by email (ADMIN only)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email)
             throws UserExceptions {
@@ -53,7 +51,7 @@ public class UserController {
     }
 
     // ✅ Get all users (ADMIN only)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
 

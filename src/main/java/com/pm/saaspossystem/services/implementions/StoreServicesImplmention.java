@@ -36,12 +36,10 @@ public class StoreServicesImplmention implements StoreServices {
         // this storeId should be set to the user who created the store, so that we can easily fetch the store by admin
 
         // 3. Set bi-directional relation
-        store.setStoreAdmin(UserMapper.toEntity(user));   // owning side
-        user.setStoreId(user.getStoreId()) ;// inverse side
-
-
-log.info(STR."user after setting relation \{user}");
-log.info(STR."store after setting relation \{store}");
+//        store.setStoreAdmin(UserMapper.toEntity(user));   // owning side
+//        user.setStoreId(user.getStoreId()) ;// inverse side
+//log.info(STR."user after setting relation \{user}");
+//log.info(STR."store after setting relation \{store}");
 
 
         return StoreMapper.toDto(savedStore);
@@ -137,7 +135,7 @@ log.info(STR."store after setting relation \{store}");
         if(currentUser ==null){
             throw  new UserExceptions("User havn't permission to access");
         }
-        log.info(STR."current user \{currentUser}");
+//        log.info(STR."current user \{currentUser}");
         Long storeId =currentUser.getStoreId();
         return  StoreMapper.toDto(storeRepository.findById(storeId).orElseThrow(()-> new UserExceptions("Store not found")));
     }
