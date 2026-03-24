@@ -18,3 +18,12 @@ TODO : Test case JUnit
 
 TODO : api doc product controller
 TODO : api doc category controller
+
+
+
+============================
+TODO: User with Authorization check
+TODO : store with all ....id should be added to user
+TODO: branch with all ....id should be added to user and store
+
+TODO: prodouct and category with store
