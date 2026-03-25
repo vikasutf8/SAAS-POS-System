@@ -918,9 +918,9 @@ Base Path: `api/v2/customer`
 **Request Body** (`CustomerDto`):
 ```json
 {
-  "fullName": "string",
-  "email": "string",
-  "phone": "string"
+  "fullName": "Vikas Arya",
+  "email": "vikasarya1889@gmail.com",
+  "phone": "+91-99833401454"
 }
 ```
 
@@ -928,11 +928,11 @@ Base Path: `api/v2/customer`
 ```json
 {
   "id": 1,
-  "fullName": "string",
-  "email": "string",
-  "phone": "string",
-  "createdAt": "2025-01-01T00:00:00",
-  "updatedAt": "2025-01-01T00:00:00"
+  "fullName": "Vikas Arya",
+  "email": "vikasarya1889@gmail.com",
+  "phone": "+91-99833401454",
+  "createdAt": "2026-03-25T19:26:04.664839",
+  "updatedAt": "2026-03-25T19:27:09.212938"
 }
 ```
 
