@@ -1,4 +1,4 @@
-# SaaS POS System - API Documentation
+```# SaaS POS System - API Documentation
 
 ## Database 
 ### Docker
@@ -837,20 +837,12 @@ Base Path: `api/v2/inventory`
 **Response** (`InventoryDto`) - Status `201 CREATED`:
 ```json
 {
-  "id": 1,
-  "branch": {
-    "id": 1,
-    "name": "string"
-  },
+  "id": 3,
   "branchId": 1,
-  "product": {
-    "id": 1,
-    "name": "string"
-  },
-  "productId": 1,
-  "quantity": 100,
-  "createdAt": "2025-01-01T00:00:00",
-  "lastUpdated": "2025-01-01T00:00:00"
+  "productId": 2,
+  "quantity": 400,
+  "createdAt": "2026-03-25T19:54:15.797382",
+  "lastUpdated": "2026-03-25T19:55:02.012226"
 }
 ```
 
@@ -898,7 +890,9 @@ Base Path: `api/v2/inventory`
 | `branchId` | Long | Branch ID |
 
 **Response** (`InventoryDto`): Matching inventory object.
-
+```shell
+http://localhost:8990/api/v2/inventory/search?productId=2&branchId=1
+```
 ---
 
 ### GET `/branch/{branchId}` - Get all inventory by branch
@@ -906,7 +900,26 @@ Base Path: `api/v2/inventory`
 **Path Params**: `branchId` (Long)
 
 **Response** (`List<InventoryDto>`): Array of inventory objects for the branch.
-
+```shell
+[
+    {
+        "id": 1,
+        "branchId": 1,
+        "productId": 1,
+        "quantity": 500,
+        "createdAt": null,
+        "lastUpdated": "2026-03-25T19:53:58.254156"
+    },
+    {
+        "id": 3,
+        "branchId": 1,
+        "productId": 2,
+        "quantity": 400,
+        "createdAt": "2026-03-25T19:54:15.797382",
+        "lastUpdated": "2026-03-25T19:55:02.012226"
+    }
+]
+```
 ---
 
 ## Customer APIs
@@ -1677,3 +1690,4 @@ Non-entity (POJO) — used as a transient field in **ShiftReport**
 | `totalAmount` | Double | Total amount for this type |
 | `transactionCount` | Integer | Number of transactions |
 | `presentage` | Double | Percentage of total |
+```

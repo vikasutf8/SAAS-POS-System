@@ -65,7 +65,7 @@ public class Inventory {
     @PrePersist
     public void prePersist() {
         this.lastUpdated = LocalDateTime.now();
-
+        this.createdAt = LocalDateTime.now();
         if (this.quantity == null) {
             this.quantity = 0;
         }
