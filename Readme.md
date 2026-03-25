@@ -1,4 +1,4 @@
-# SaaS POS System - API Documentation
+```# SaaS POS System - API Documentation
 
 ## Database 
 ### Docker
@@ -837,20 +837,12 @@ Base Path: `api/v2/inventory`
 **Response** (`InventoryDto`) - Status `201 CREATED`:
 ```json
 {
-  "id": 1,
-  "branch": {
-    "id": 1,
-    "name": "string"
-  },
+  "id": 3,
   "branchId": 1,
-  "product": {
-    "id": 1,
-    "name": "string"
-  },
-  "productId": 1,
-  "quantity": 100,
-  "createdAt": "2025-01-01T00:00:00",
-  "lastUpdated": "2025-01-01T00:00:00"
+  "productId": 2,
+  "quantity": 400,
+  "createdAt": "2026-03-25T19:54:15.797382",
+  "lastUpdated": "2026-03-25T19:55:02.012226"
 }
 ```
 
@@ -898,7 +890,9 @@ Base Path: `api/v2/inventory`
 | `branchId` | Long | Branch ID |
 
 **Response** (`InventoryDto`): Matching inventory object.
-
+```shell
+http://localhost:8990/api/v2/inventory/search?productId=2&branchId=1
+```
 ---
 
 ### GET `/branch/{branchId}` - Get all inventory by branch
@@ -906,7 +900,26 @@ Base Path: `api/v2/inventory`
 **Path Params**: `branchId` (Long)
 
 **Response** (`List<InventoryDto>`): Array of inventory objects for the branch.
-
+```shell
+[
+    {
+        "id": 1,
+        "branchId": 1,
+        "productId": 1,
+        "quantity": 500,
+        "createdAt": null,
+        "lastUpdated": "2026-03-25T19:53:58.254156"
+    },
+    {
+        "id": 3,
+        "branchId": 1,
+        "productId": 2,
+        "quantity": 400,
+        "createdAt": "2026-03-25T19:54:15.797382",
+        "lastUpdated": "2026-03-25T19:55:02.012226"
+    }
+]
+```
 ---
 
 ## Customer APIs
@@ -918,9 +931,9 @@ Base Path: `api/v2/customer`
 **Request Body** (`CustomerDto`):
 ```json
 {
-  "fullName": "string",
-  "email": "string",
-  "phone": "string"
+  "fullName": "Vikas Arya",
+  "email": "vikasarya1889@gmail.com",
+  "phone": "+91-99833401454"
 }
 ```
 
@@ -928,11 +941,11 @@ Base Path: `api/v2/customer`
 ```json
 {
   "id": 1,
-  "fullName": "string",
-  "email": "string",
-  "phone": "string",
-  "createdAt": "2025-01-01T00:00:00",
-  "updatedAt": "2025-01-01T00:00:00"
+  "fullName": "Vikas Arya",
+  "email": "vikasarya1889@gmail.com",
+  "phone": "+91-99833401454",
+  "createdAt": "2026-03-25T19:26:04.664839",
+  "updatedAt": "2026-03-25T19:27:09.212938"
 }
 ```
 
@@ -1093,6 +1106,22 @@ Base Path: `api/v2/orders`
       "price": 90.0
     }
   ]
+},
+
+
+{
+  "branchId": 1,
+  "cashierId": 2,
+  "customerId": 2,
+  "paymentType": "UPI",
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2,
+      "price": 1500.0
+    }
+
+  ]
 }
 ```
 
@@ -1119,6 +1148,29 @@ Base Path: `api/v2/orders`
       "orderId": 1
     }
   ]
+},
+{
+"id": 52,
+"totalAmount": 150000.0,
+"createdAt": "2026-03-25T21:35:42.600225",
+"branch": null,
+"cashier": null,
+"customer": null,
+"branchId": 1,
+"cashierId": 2,
+"customerId": 2,
+"paymentType": "UPI",
+"orderStatus": null,
+"items": [
+{
+"id": 52,
+"quantity": 2,
+"price": 75000.0,
+"product": null,
+"productId": 1,
+"orderId": 52
+}
+]
 }
 ```
 
@@ -1301,25 +1353,58 @@ Base Path: `api/v2/shift_reports`
 | `cashierId` | Long | Cashier (User) ID |
 | `branchId` | Long | Branch ID |
 | `shiftStartTime` | LocalDateTime | Shift start time (ISO format) |
-
+```shell
+http://localhost:8990/api/v2/shift_reports/start?cashierId=2&branchId=1&shiftStartTime=2026-03-25T10:00:00
+```
 **Response** (`ShiftReportDto`):
 ```json
 {
-  "id": 1,
-  "shiftStart": "2025-01-01T09:00:00",
-  "shiftEnd": null,
-  "totalSales": 0.0,
-  "netSales": 0.0,
-  "totalOrders": 0,
-  "cashier": { "id": 1, "fullName": "string" },
-  "branch": { "id": 1, "name": "string" },
-  "cashierId": 1,
+  "branch": {
+    "id": 1,
+    "name": "Main Branch-0000",
+    "address": "123 MG Road, Bangalore",
+    "phone": "+91-98765433440",
+    "email": "mainbranch1111@example.com",
+    "workingDays": [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY"
+    ],
+    "openTime": "09:00:00",
+    "closeTime": "21:00:00",
+    "storeId": 1,
+    "managerId": 2,
+    "createdAt": "2026-03-24T20:51:34.88703",
+    "updatedAt": "2026-03-24T20:59:19.419873"
+  },
   "branchId": 1,
-  "paymentSummeries": [],
-  "topSellingProducts": [],
-  "recentOrders": [],
-  "refunds": [],
-  "createdAt": "2025-01-01T09:00:00",
+  "cashier": {
+    "id": 2,
+    "fullName": "test0",
+    "password": null,
+    "phone": "9983340000",
+    "email": "test0@gmail.com",
+    "storeId": null,
+    "branchId": null,
+    "role": "ROLE_ADMIN",
+    "createdAt": null,
+    "updatedAt": null,
+    "lastLogin": "2026-03-25T19:33:57.893954"
+  },
+  "cashierId": 2,
+  "createdAt": "2026-03-25T20:17:05.209484",
+  "id": 1,
+  "netSales": null,
+  "paymentSummeries": null,
+  "recentOrders": null,
+  "refunds": null,
+  "shiftEnd": null,
+  "shiftStart": "2026-03-25T20:17:05.112954",
+  "topSellingProducts": null,
+  "totalOrders": null,
+  "totalSales": null,
   "updatedAt": null
 }
 ```
@@ -1360,7 +1445,7 @@ Base Path: `api/v2/shift_reports`
 **Response** (`List<ShiftReportDto>`): Array of shift report objects.
 
 ---
-
+# TODO
 ### GET `/cashier/{cashierId}` - Get shift reports by cashier
 
 **Path Params**: `cashierId` (Long)
@@ -1368,6 +1453,7 @@ Base Path: `api/v2/shift_reports`
 **Response** (`List<ShiftReportDto>`): Array of shift report objects.
 
 ---
+# TODO
 
 ### GET `/current/{cashierId}` - Get current shift progress
 
@@ -1376,7 +1462,7 @@ Base Path: `api/v2/shift_reports`
 **Response** (`ShiftReportDto`): Current active shift report with live data.
 
 ---
-
+# TOD0
 ### GET `/cashier/{cashierId}/date` - Get shift report by date
 
 **Path Params**: `cashierId` (Long)
@@ -1677,3 +1763,4 @@ Non-entity (POJO) — used as a transient field in **ShiftReport**
 | `totalAmount` | Double | Total amount for this type |
 | `transactionCount` | Integer | Number of transactions |
 | `presentage` | Double | Percentage of total |
+```

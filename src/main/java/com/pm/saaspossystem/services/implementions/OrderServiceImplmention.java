@@ -5,11 +5,13 @@ import com.pm.saaspossystem.domain.PaymentType;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.OrderMapper;
 import com.pm.saaspossystem.model.Branch;
+import com.pm.saaspossystem.model.Customer;
 import com.pm.saaspossystem.model.Order;
 import com.pm.saaspossystem.model.Product;
 import com.pm.saaspossystem.payload.dto.OrderDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.repository.BranchRepository;
+import com.pm.saaspossystem.repository.CustomerRepository;
 import com.pm.saaspossystem.repository.OrderRepository;
 import com.pm.saaspossystem.repository.ProductRepository;
 import com.pm.saaspossystem.services.OrderService;
@@ -31,6 +33,7 @@ public class OrderServiceImplmention implements OrderService {
     private  final UserService userService;
     private  final BranchRepository branchRepository;
     private final ProductRepository productRepository;
+    private final CustomerRepository customerRepository;
 
     @Override
     @Transactional
@@ -44,6 +47,9 @@ public class OrderServiceImplmention implements OrderService {
         if (orderDto.getItems() == null || orderDto.getItems().isEmpty()) {
             throw new RuntimeException("Order must contain at least one item");
         }
+
+        Customer customer = customerRepository.findById(orderDto.getCustomerId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // calculate total
         double totalAmount = orderDto.getItems()
@@ -66,6 +72,12 @@ public class OrderServiceImplmention implements OrderService {
 
         orderDto.setBranchId(branch.getId());
         orderDto.setCashierId(cashier.getId());
+        orderDto.setCustomerId(customer.getId());
+
+        orderDto.setCashier(cashier);
+//        orderDto.setBranch(branch);
+//        orderDto.setCustomer(customer);
+
 
         Order order = OrderMapper.toEntity(orderDto);
 
