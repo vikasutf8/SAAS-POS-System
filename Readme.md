@@ -1,6 +1,6 @@
-```# SaaS POS System - API Documentation
+# SaaS POS System - API Documentation
 
-## Database 
+
 ### Docker
 ```shell
 docker-compose up -d
@@ -9,8 +9,8 @@ root
 show databases;
 use saas-pos
 show tables;
-
-
+```
+## Database 
 ```
 +------------------------------------+
 | Tables_in_saas-pos                 |
@@ -30,7 +30,7 @@ show tables;
 | stores                             |
 | users                              |
 +------------------------------------+
-
+```
 
 ### Schema design
 
