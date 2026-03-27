@@ -1,13 +1,16 @@
 package com.pm.saaspossystem.payload.dto;
 
-import com.pm.saaspossystem.domain.UserRole;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,30 +19,34 @@ import java.time.LocalDateTime;
 public class UserDto {
     private Long id;
 
+    @NotBlank(message = "Full name is required")
+    @Size(max = 100)
     private String fullName;
 
-//    @NotBlank(message = "Password is required")
-//    @Size(max = 100, min = 8)
+    /** Only present on create/update requests — never returned in responses */
+    @Size(min = 8, max = 100)
     private String password;
 
+    @NotBlank(message = "Phone is required")
+    @Pattern(regexp = "^[0-9]{10,15}$")
     private String phone;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
+    private boolean isActive;
 
+    /**
+     * Direct store link on User entity (relevant for STORE_MANAGER).
+     * Null for ADMIN, BRANCH_MANAGER, BRANCH_CASHIER.
+     */
     private Long storeId;
-    private Long branchId;
 
-
-
-    private UserRole role;
+    /** All role assignments — each with its own store/branch context */
+    private List<RoleMappingDto> roleMappings;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime lastLogin;
-
-//    public User orElseThrow(Object userNotFound) {
-//    }
 }
