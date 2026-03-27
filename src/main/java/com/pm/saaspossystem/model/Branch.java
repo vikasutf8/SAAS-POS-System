@@ -22,6 +22,10 @@ import java.util.List;
                         name = "uk_branch_name_store",
                         columnNames = {"name", "store_id"}
                 )
+        },
+        indexes = {
+                @Index(name = "idx_branch_store", columnList = "store_id"),
+                @Index(name = "idx_branch_manager", columnList = "branch_manager_id")
         }
 )
 @Getter @Setter @Builder

@@ -15,6 +15,14 @@ import java.time.LocalDateTime;
                         name = "uk_user_role_branch",
                         columnNames = {"user_id", "role_id", "branch_id"}
                 )
+        },
+        indexes = {
+                @Index(name = "idx_user_role_user", columnList = "user_id"),
+                @Index(name = "idx_user_role_role", columnList = "role_id"),
+                @Index(name = "idx_user_role_branch", columnList = "branch_id"),
+                @Index(name = "idx_user_role_store", columnList = "store_id"),
+                @Index(name = "idx_user_role_assigned_by", columnList = "assigned_by_id"),
+                @Index(name = "idx_user_role_assigned_at", columnList = "assignedAt")
         }
 )
 @Getter
