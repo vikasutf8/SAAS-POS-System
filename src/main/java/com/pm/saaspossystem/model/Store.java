@@ -15,7 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "stores")
+@Table(
+        name = "stores",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_store_code",
+                        columnNames = {"storeCode"}
+                )
+        },
+        indexes = {
+                @Index(name = "idx_store_code", columnList = "storeCode"),
+                @Index(name = "idx_store_manager", columnList = "store_manager_id"),
+                @Index(name = "idx_created_by", columnList = "created_by_id")
+        }
+
+)
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
