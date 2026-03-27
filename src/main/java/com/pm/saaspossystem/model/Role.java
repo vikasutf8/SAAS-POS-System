@@ -1,10 +1,8 @@
 package com.pm.saaspossystem.model;
 
+import com.pm.saaspossystem.domain.RoleName;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(
@@ -17,6 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Role {
 
     @Id
@@ -30,11 +29,4 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
     private RoleName name;
-
-    public enum RoleName {
-        ADMIN,
-        STORE_MANAGER,
-        BRANCH_MANAGER,
-        BRANCH_CASHIER
-    }
 }
