@@ -28,7 +28,7 @@ public class StoreMapper {
                 .storeType(store.getStoreType())
                 .description(store.getDescription())
                 .status(store.getStatus())
-                .storeAdminId(store.getStoreAdmin() != null ? store.getStoreAdmin().getId() : null)
+//                .storeAdminId(store.getStoreAdmin() != null ? store.getStoreAdmin().getId() : null)
                 .contact(toContactDto(store.getContact()))
                 .createdAt(store.getCreatedAt())
                 .updatedAt(store.getUpdatedAt())
@@ -50,7 +50,7 @@ public class StoreMapper {
                 .storeType(dto.getStoreType())
                 .description(dto.getDescription())
                 .status(dto.getStatus()) // usually ignored on createfd
-                .storeAdmin(storeAdmin)
+//                .storeAdmin(storeAdmin)
                 .contact(toContactEntity(dto.getContact()))
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())

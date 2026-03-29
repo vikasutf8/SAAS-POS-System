@@ -67,13 +67,22 @@ public class UserRoleMapping {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_by_id", nullable = false)
     @NotNull
-    private User assignedBy;
+    private User assignedBy;// createdBy
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime assignedAt;
+
+    @Column(nullable = true)
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onAssign() {
         this.assignedAt = LocalDateTime.now();
     }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
 }

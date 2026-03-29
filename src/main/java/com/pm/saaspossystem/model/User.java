@@ -1,5 +1,6 @@
 package com.pm.saaspossystem.model;
 
+import com.pm.saaspossystem.domain.RoleName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -68,7 +70,10 @@ public class User {
      * because one user can manage up to 2 branches.
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserRoleMapping> roleMappings = new HashSet<>();
+    private Set<UserRoleMapping> userroleMappings = new HashSet<>(); //GOOD
+
+
+    private List<RoleName> roleNames;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

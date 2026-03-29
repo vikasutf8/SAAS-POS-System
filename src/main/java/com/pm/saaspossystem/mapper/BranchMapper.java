@@ -34,11 +34,11 @@ public class BranchMapper {
                                 ? branch.getStore().getId()
                                 : null
                 )
-                .managerId(
-                        branch.getManager() != null
-                                ? branch.getManager().getId()
-                                : null
-                )
+//                .managerId(
+//                        branch.getManager() != null
+//                                ? branch.getManager().getId()
+//                                : null
+//                )
                 .createdAt(branch.getCreatedAt())
                 .updatedAt(branch.getUpdatedAt())
                 .build();
@@ -65,7 +65,7 @@ public class BranchMapper {
                 .openTime(dto.getOpenTime())
                 .closeTime(dto.getCloseTime())
                 .store(store)
-                .manager(manager)
+//                .manager(manager)
                 .build();
     }
 
@@ -94,7 +94,7 @@ public class BranchMapper {
         }
 
         if (manager != null) {
-            branch.setManager(manager);
+//            branch.setManager(manager);
         }
     }
 }

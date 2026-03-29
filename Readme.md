@@ -29,6 +29,8 @@ show tables;
 | shift_reports_top_selling_products |
 | stores                             |
 | users                              |
+| Role                               |
+| UserRoleMapping                    |
 +------------------------------------+
 ```
 
@@ -38,7 +40,26 @@ show tables;
 https://app.eraser.io/workspace/9n9DiRjGqNB2LPjV5IOh?diagram=zr4EsE6GvrSx5F-okKjdI
 ```
 
+
+
 ![img.png](img.png)
+
+
+
+---
+### Seeder Roles  in Role Table
+```
+public enum RoleName {
+ADMIN,
+STORE_MANAGER,
+BRANCH_MANAGER,
+BRANCH_CASHIER
+}
+```
+Base URL: `api/v1/roles`
+GET requests
+
+---
 
 Base URL: `api/v2`
 
@@ -70,7 +91,44 @@ https://crimson-comet-847628.postman.co/workspace/springBoot-fitness~3624bf6f-c3
 ```
 
 Base Path: `api/v2/auth`
+![img_1.png](img_1.png)
+---
 
+#### Full picture
+```
+Request
+   │
+   ▼
+① Email duplicate check  ──→ 409 if exists
+   │
+   ▼
+② validateAndFetchRoles()
+   ├─ ADMIN alone rule
+   ├─ DB fetch roles
+   └─ invalid role check  ──→ 400 if bad role
+   │
+   ▼
+③ Build User entity
+   └─ BCrypt hash password
+   │
+   ▼
+④ Save User (users table)
+   │
+   ▼
+⑤ Save UserRoleMapping rows (one per role)
+   │
+   ▼
+⑥ Build Spring Authentication object
+   │
+   ▼
+⑦ Set SecurityContext
+   │
+   ▼
+⑧ Generate JWT
+   │
+   ▼
+⑨ Return AuthResponse { jwt, message, user }
+```
 ### POST `/signup` - Register a new user
 
 **Request Body** (`UserDto`):

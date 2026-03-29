@@ -1,5 +1,6 @@
 package com.pm.saaspossystem.payload.dto;
 
+import com.pm.saaspossystem.domain.RoleName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserDto {
-    private Long id;
+//    private Long id;
 
     @NotBlank(message = "Full name is required")
     @Size(max = 100)
@@ -44,7 +45,7 @@ public class UserDto {
     private Long storeId;
 
     /** All role assignments — each with its own store/branch context */
-    private List<RoleMappingDto> roleMappings;
+    private List<RoleName> roles;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

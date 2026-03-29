@@ -2,7 +2,7 @@ package com.pm.saaspossystem.mapper;
 
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.model.UserRoleMapping;
-import com.pm.saaspossystem.payload.dto.RoleMappingDto;
+import com.pm.saaspossystem.payload.dto.UserRoleMappingDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
 
 import java.util.Collections;
@@ -36,7 +36,7 @@ public class UserMapper {
                 .build();
     }
 
-    private static List<RoleMappingDto> toRoleMappingDtoList(Set<UserRoleMapping> mappings) {
+    private static List<UserRoleMappingDto> toRoleMappingDtoList(Set<UserRoleMapping> mappings) {
         if (mappings == null || mappings.isEmpty()) return Collections.emptyList();
 
         return mappings.stream()
@@ -44,8 +44,8 @@ public class UserMapper {
                 .collect(Collectors.toList());
     }
 
-    private static RoleMappingDto toRoleMappingDto(UserRoleMapping mapping) {
-        return RoleMappingDto.builder()
+    private static UserRoleMappingDto toRoleMappingDto(UserRoleMapping mapping) {
+        return UserRoleMappingDto.builder()
                 .id(mapping.getId())
                 .roleName(mapping.getRole().getName())
                 .storeId(mapping.getStore() != null ? mapping.getStore().getId() : null)
