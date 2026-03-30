@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserDto {
-//    private Long id;
+    private Long id;
 
     @NotBlank(message = "Full name is required")
     @Size(max = 100)

@@ -1,16 +1,30 @@
 package com.pm.saaspossystem.payload.dto;
 
-import lombok.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Builder
 public class StoreContactDto {
 
-    private String address;
+    @NotBlank(message = "Phone is required")
+    @Pattern(regexp = "^[0-9]{10,15}$")
     private String phone;
+
+    @NotBlank(message = "Email is required")
+    @Email
     private String email;
+
+    @NotBlank(message = "Address is required")
+    private String address;
+
+    private String city;
+    private String pincode;
 }

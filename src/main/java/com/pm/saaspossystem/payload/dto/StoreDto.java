@@ -1,6 +1,7 @@
 package com.pm.saaspossystem.payload.dto;
 
 import com.pm.saaspossystem.domain.StoreStatus;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,27 +17,39 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class StoreDto {
 
-    private Long id;
+    private Long id;                    // null on request, populated in response
 
+    @NotBlank(message = "Store code is required")
+    private String storeCode;
 
-    @NotBlank(message = "Brand name is required")
+    @NotBlank(message = "Brand is required")
     private String brand;
 
-    // Store Admin (One-to-One)
-    private Long storeAdminId; // userId of the store admin
+    private String description;
 
-    // Store Type
     @NotBlank(message = "Store type is required")
     private String storeType;
 
-    // Description
-    private String description;
-
-    // Status
+    // ── status is NOT in request — auto-set to PENDING in @PrePersist
     private StoreStatus status;
 
-    // Embedded Contact
+    @Valid
     private StoreContactDto contact;
+
+
+    /**
+     * On request  → not sent (resolved from SecurityContext in service)
+     * On response → admin's id who created this store
+     */
+    private Long createdById;
+
+    /**
+     * On request  → optional, assign manager at creation time
+     * On response → id of assigned store manager
+     */
+    private Long storeManagerId;
+
+
 
     // Timestamps
     private LocalDateTime createdAt;

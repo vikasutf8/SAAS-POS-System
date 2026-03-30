@@ -24,4 +24,10 @@ public class StoreContact {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
+
+    @NotBlank(message = "City is required")
+    private String city;
+
+    @NotBlank(message = "pinCode is required")
+    private String pincode;
 }

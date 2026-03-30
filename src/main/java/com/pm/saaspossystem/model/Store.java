@@ -102,4 +102,8 @@ public class Store {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+//    public boolean isPresent() {
+//        
+//    }
 }

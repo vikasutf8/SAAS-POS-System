@@ -11,7 +11,8 @@ import java.util.List;
 public interface StoreServices
 {
 
-    StoreDto createStore(StoreDto storeDto, UserDto user);
+    StoreDto createStore(StoreDto storeDto, UserDto user) throws UserExceptions;
+    StoreDto assigneStoreManager(Long storeId,Long managerId, UserDto user) throws UserExceptions;
     StoreDto getStoreById(Long storeId) throws Exception;
     List<StoreDto> getAllStores();
     Store getStoreByAdmin() throws UserExceptions;
@@ -20,4 +21,5 @@ public interface StoreServices
     StoreDto getStoreByEmployee() throws UserExceptions;
     void deleteStore() throws UserExceptions;
     StoreDto moderateStore(Long id, StoreStatus storeStatus) throws UserExceptions;
+
 }

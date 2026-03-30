@@ -31,8 +31,23 @@ public class StoreController {
     public StoreDto createStore(@RequestBody StoreDto storeDto) throws UserExceptions {
 //        log.info(   "Creating store with data: " + storeDto);
         UserDto currentUser = userService.getCurrentUser();
-//        log.info("user crrent "+currentUser);
+        log.info(STR."user crrent \{currentUser}");
         return storeServices.createStore(storeDto, currentUser);
+    }
+
+    // =========================================
+    // Assigne Store manager to store
+    // =========================================
+    @PatchMapping("{storeId}/manager/{managerId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public StoreDto assigneStoreManager(
+            @RequestParam Long storeId,
+            @RequestParam Long managerId
+    ) throws UserExceptions {
+//        log.info(   "Creating store with data: " + storeDto);
+        UserDto currentUser = userService.getCurrentUser();
+        log.info(STR."user crrent \{currentUser}");
+        return storeServices.assigneStoreManager(storeId,managerId,currentUser);
     }
 
     // =========================================
@@ -103,4 +118,12 @@ public class StoreController {
     public void deleteCurrentUserStore() throws UserExceptions {
         storeServices.deleteStore();
     }
+
+
+//    @PatchMapping("/assign-sm")
+//    public ResponseEntity<UserDto> assignedStoreManagerToStore(
+//            @RequestParam Long userId, @RequestParam Long storeId) throws UserExceptions {
+//
+//        return ResponseEntity.ok(userService.assignStoreManagerToStore(userId,storeId));
+//    }
 }

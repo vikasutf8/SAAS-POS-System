@@ -102,15 +102,5 @@ log.info(STR."current user email \{user}");
     }
 
 
-    private UserDto mapToDto(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .fullName(user.getFullName())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .role(user.getRole())
-                .storeId(user.getStore().getId())
-                .lastLogin(user.getLastLogin())
-                .build();
-    }
+
 }
