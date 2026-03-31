@@ -47,6 +47,8 @@ public class UserDto {
     /** All role assignments — each with its own store/branch context */
     private List<RoleName> roles;
 
+    private List<UserRoleMappingDto> userRoleMappings;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime lastLogin;

@@ -11,4 +11,6 @@ public interface UserRoleMappingRepository extends JpaRepository<UserRoleMapping
      boolean existsByUserIdAndRoleName(Long userId, RoleName roleName);
 
     UserRoleMapping findByUserIdAndRoleName(Long userId, RoleName roleName);
+
+    Long countByUserIdAndRoleName(Long userId, RoleName roleName);
 }
