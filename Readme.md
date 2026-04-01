@@ -1572,9 +1572,7 @@ http://localhost:8990/api/v2/shift_reports/start?cashierId=2&branchId=1&shiftSta
 ## Models
 
 ### User
-
 Table: `users`
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1582,55 +1580,53 @@ Table: `users`
 | `password` | String | Required, Min 8, Max 100 |
 | `phone` | String | Required, Unique, 10-15 digits |
 | `email` | String | Required, Unique, Valid email |
-| `role` | UserRole (Enum) | Required |
+| `isActive` | boolean | Required, Default true |
 | `createdAt` | LocalDateTime | Auto set, Not updatable |
 | `updatedAt` | LocalDateTime | Auto updated |
 | `lastLogin` | LocalDateTime | Nullable |
 
 **Relationships:**
-- `store` → One-to-One with **Store**
-- `branch` → Many-to-One with **Branch**
+- `store` → Many-to-One with **Store** (nullable, for Store Manager)
+- `userRoleMappings` → One-to-Many with **UserRoleMapping** (all role assignments for this user)
 
 ---
 
 ### Store
-
 Table: `stores`
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
+| `storeCode` | String | Required, Unique |
 | `brand` | String | Required |
-| `storeType` | String | Required |
 | `description` | String | Max 500, Optional |
-| `status` | StoreStatus (Enum) | Required, Defaults to `PENDING` |
+| `storeType` | String | Required |
+| `status` | StoreStatus (Enum) | Required, Defaults to ACTIVE |
 | `contact` | StoreContact (Embedded) | Embedded object |
 | `createdAt` | LocalDateTime | Auto set, Not updatable |
 | `updatedAt` | LocalDateTime | Auto updated |
 
 **Relationships:**
-- `storeAdmin` → One-to-One with **User** (Required, Unique)
+- `createdBy` → Many-to-One with **User** (Admin who created the store)
+- `storeManager` → One-to-One with **User** (nullable, unique)
+- `branches` → One-to-Many with **Branch** (all branches under this store)
 
 ---
 
 ### StoreContact (Embeddable)
-
 Embedded in **Store**
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `address` | String | Required |
 | `phone` | String | Required, 10-15 digits |
 | `email` | String | Required, Valid email |
+| `city` | String | Required |
+| `pincode` | String | Required |
 
 ---
 
 ### Branch
-
 Table: `branches`
-
 Unique Constraint: (`name`, `store_id`)
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1638,7 +1634,7 @@ Unique Constraint: (`name`, `store_id`)
 | `address` | String | Required, Max 300 |
 | `phone` | String | Required, Max 20 |
 | `email` | String | Valid email, Optional |
-| `workingDays` | List\<String\> | Element Collection |
+| `workingDays` | List<String> | Element Collection |
 | `openTime` | LocalTime | Required |
 | `closeTime` | LocalTime | Required |
 | `createdAt` | LocalDateTime | Auto set, Not updatable |
@@ -1646,16 +1642,14 @@ Unique Constraint: (`name`, `store_id`)
 
 **Relationships:**
 - `store` → Many-to-One with **Store** (Required)
-- `manager` → One-to-One with **User** (Unique, Cascade Remove)
+- `createdBy` → Many-to-One with **User** (Admin or Store Manager who created the branch)
+- `branchManager` → Many-to-One with **User** (nullable, assigned Branch Manager)
 
 ---
 
 ### Category
-
 Table: `categories`
-
 Unique Constraint: (`name`, `store_id`)
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1669,11 +1663,8 @@ Unique Constraint: (`name`, `store_id`)
 ---
 
 ### Product
-
 Table: `products`
-
 Unique Constraint: (`sku`)
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1694,11 +1685,8 @@ Unique Constraint: (`sku`)
 ---
 
 ### Inventory
-
 Table: `inventories`
-
 Unique Constraint: (`branch_id`, `product_id`)
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1713,11 +1701,8 @@ Unique Constraint: (`branch_id`, `product_id`)
 ---
 
 ### Customer
-
 Table: `customers`
-
 Unique Constraint: (`email`)
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1730,16 +1715,14 @@ Unique Constraint: (`email`)
 ---
 
 ### Order
-
 Table: `orders`
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
 | `totalAmount` | Double | Nullable |
+| `createdAt` | LocalDateTime | Auto set |
 | `paymentType` | PaymentType (Enum) | Nullable |
 | `orderStatus` | OrderStatus (Enum) | Nullable |
-| `createdAt` | LocalDateTime | Auto set |
 
 **Relationships:**
 - `branch` → Many-to-One with **Branch**
@@ -1750,9 +1733,7 @@ Table: `orders`
 ---
 
 ### OrderItem
-
 Table: `order_items`
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1766,9 +1747,7 @@ Table: `order_items`
 ---
 
 ### Refund
-
 Table: `refunds`
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1787,9 +1766,7 @@ Table: `refunds`
 ---
 
 ### ShiftReport
-
 Table: `shift_reports`
-
 | Field | Type | Constraints |
 |-------|------|-------------|
 | `id` | Long | Primary Key, Auto Generated |
@@ -1806,19 +1783,43 @@ Table: `shift_reports`
 - `branch` → Many-to-One with **Branch**
 - `topSellingProducts` → One-to-Many with **Product**
 - `recentOrders` → One-to-Many with **Order** (Cascade ALL)
-- `refunds` → One-to-Many with **Refund** (Cascade ALL, Mapped by `shiftReport`)
-- `paymentSummeries` → List\<PaymentSummery\> (Transient, not persisted)
+- `refunds` → One-to-Many with **Refund** (Cascade ALL, mapped by `shiftReport`)
+- `paymentSummeries` → List<PaymentSummery> (Transient, not persisted)
 
 ---
 
 ### PaymentSummery
-
 Non-entity (POJO) — used as a transient field in **ShiftReport**
-
 | Field | Type | Description |
 |-------|------|-------------|
 | `type` | PaymentType (Enum) | Payment method |
 | `totalAmount` | Double | Total amount for this type |
 | `transactionCount` | Integer | Number of transactions |
-| `presentage` | Double | Percentage of total |
-```
+| `percentage` | Double | Percentage of total |
+
+---
+
+### UserRoleMapping
+Table: `user_role_mappings`
+Unique Constraint: (`user_id`, `role_id`, `branch_id`)
+| Field | Type | Constraints |
+|-------|------|-------------|
+| `id` | Long | Primary Key, Auto Generated |
+| `user` | User | Many-to-One, Required |
+| `role` | Role | Many-to-One, Required |
+| `store` | Store | Many-to-One, Nullable |
+| `branch` | Branch | Many-to-One, Nullable |
+| `assignedBy` | User | Many-to-One, Required |
+| `assignedAt` | LocalDateTime | Required |
+| `updatedAt` | LocalDateTime | Nullable |
+
+---
+
+### Role
+Table: `roles`
+| Field | Type | Constraints |
+|-------|------|-------------|
+| `id` | Long | Primary Key, Auto Generated |
+| `name` | RoleName (Enum) | Required, Unique |
+
+---

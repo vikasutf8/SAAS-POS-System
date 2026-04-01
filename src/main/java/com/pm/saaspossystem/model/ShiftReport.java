@@ -1,6 +1,7 @@
 package com.pm.saaspossystem.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -61,7 +62,8 @@ public class ShiftReport {
 
 
 
-    @OneToMany(mappedBy = "shiftReport", cascade = CascadeType.ALL) // mapped by donot create a sperate table
+    @OneToMany(mappedBy = "shiftReport", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("shiftReport") // bidirecitional inverse side
     private List<Refund> refunds;
 
     private LocalDateTime createdAt;

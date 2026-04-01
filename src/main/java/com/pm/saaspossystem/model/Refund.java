@@ -38,8 +38,9 @@ public class Refund {
     private Double amount;
 
     // Refund belongs to a ShiftReport
-    @ManyToOne
-    @JsonIgnoreProperties
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shift_report_id", nullable = false) // fk bidirectional owing side
+    @JsonIgnoreProperties("refunds") //avoid recursive serialization
     private ShiftReport shiftReport;
 
     // Cashier who processed refund
