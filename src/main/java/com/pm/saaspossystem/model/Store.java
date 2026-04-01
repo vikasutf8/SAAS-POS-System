@@ -66,8 +66,8 @@ public class Store {
      * Many stores can be created by one admin (but in practice only one admin exists).
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_id", nullable = false)
-    @NotNull(message = "Created by (admin) is required")
+    @JoinColumn(name = "created_by_id", nullable = false) //fk unidirectional  owning side
+     @NotNull(message = "Created by (admin) is required")
     private User createdBy;
 
     /**
@@ -76,14 +76,14 @@ public class Store {
      * Nullable: store may not have a manager yet.
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_manager_id", unique = true)
+    @JoinColumn(name = "store_manager_id", unique = true, nullable = true) // one to one mapping unidirectional owning side
     private User storeManager;
 
     /**
      * All branches under this store.
      */
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<Branch> branches = new ArrayList<>();
+    private List<Branch> branches = new ArrayList<>(); // bidirectional inverse side
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -95,7 +95,7 @@ public class Store {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.status = StoreStatus.PENDING;
+        this.status = StoreStatus.ACTIVE; // default status when creating a store
     }
 
     @PreUpdate
@@ -103,7 +103,4 @@ public class Store {
         this.updatedAt = LocalDateTime.now();
     }
 
-//    public boolean isPresent() {
-//        
-//    }
 }

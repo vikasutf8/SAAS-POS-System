@@ -18,7 +18,13 @@ import java.time.LocalDateTime;
                         name = "uk_category_name_store",
                         columnNames = {"name", "store_id"}
                 )
-        })
+        },
+        indexes = {
+                @Index(name = "idx_category_store", columnList = "store_id"),
+                @Index(name = "idx_category_name_store", columnList = "name, store_id")
+        }
+
+        )
 @Getter
 @Setter
 @Builder
@@ -41,7 +47,7 @@ public class Category {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     @NotNull(message = "Store is required")
-    private Store store;
+    private Store store;  // fk unidirectioin owing side
 
     // ========================================
     // Auditing
@@ -52,5 +58,17 @@ public class Category {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
 
 }

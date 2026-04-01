@@ -14,6 +14,6 @@ public class PaymentSummery {
     private Double totalAmount;
 
     private Integer transactionCount;
-    private Double presentage;
+    private Double percentage;
 
 }

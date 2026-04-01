@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 @Table(
         name = "branches",
@@ -51,7 +52,9 @@ public class Branch {
 
     @Email
     private String email;
-
+    /**
+     * workingDays → branch_working_days.branch_id — @ElementCollection, no entity, unidirectional
+     */
     @ElementCollection
     @CollectionTable(name = "branch_working_days", joinColumns = @JoinColumn(name = "branch_id"))
     @Column(name = "day")
@@ -67,7 +70,7 @@ public class Branch {
      * The store this branch belongs to.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false)
+    @JoinColumn(name = "store_id", nullable = false) // fk bidirectional owing side
     @NotNull
     private Store store;
 
@@ -76,7 +79,7 @@ public class Branch {
      * Admin can never be branch manager, but CAN create branches.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_id", nullable = false)
+    @JoinColumn(name = "created_by_id", nullable = false) // fk unidirectional owning side -- no back reference
     @NotNull
     private User createdBy;
 
@@ -88,7 +91,7 @@ public class Branch {
      *   (enforced via UserRoleMapping count check in service layer).
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_manager_id")
+    @JoinColumn(name = "branch_manager_id", nullable = true)// fk unidirectional owning side -- no back reference
     private User branchManager;
 
     @CreatedDate

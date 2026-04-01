@@ -27,17 +27,17 @@ public class Order {
 
     // Many Orders -> One Branch
     @ManyToOne
-    @JoinColumn(name = "branch_id")
+    @JoinColumn(name = "branch_id")//fk unidirectional owning side
     private Branch branch;
 
     // Many Orders -> One Cashier(User)
     @ManyToOne
-    @JoinColumn(name = "cashier_id")
+    @JoinColumn(name = "cashier_id")//fk unidirectional owning side
     private User cashier;
 
     // Many Orders -> One Customer
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id")//fk unidirectional owning side
     private Customer customer;
 
     // Enum Payment Type

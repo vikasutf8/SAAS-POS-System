@@ -1,6 +1,5 @@
 package com.pm.saaspossystem.model;
 
-import com.pm.saaspossystem.domain.RoleName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +12,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -60,6 +58,7 @@ public class User {
      * Populated when this user is assigned as Store Manager.
      * Null for Admin, Branch Manager, Cashier.
      */
+    // this is FK
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
@@ -70,10 +69,10 @@ public class User {
      * because one user can manage up to 2 branches.
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserRoleMapping> userroleMappings = new HashSet<>(); //GOOD
+    private Set<UserRoleMapping> userRoleMappings = new HashSet<>(); //GOOD -- inverse side
 
 
-    private List<RoleName> roleNames;
+//    private List<RoleName> roleNames;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

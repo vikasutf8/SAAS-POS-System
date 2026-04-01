@@ -10,11 +10,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(
         name = "inventories",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uk_branch_product",
-                        columnNames = {"branch_id", "product_id"}
-                )
+        indexes = {
+                @Index(name = "idx_inventory_branch", columnList = "branch_id"),
+                @Index(name = "idx_inventory_product", columnList = "product_id")
         }
 
 )
@@ -34,11 +32,11 @@ public class Inventory {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_id", nullable = false)
+    @JoinColumn(name = "branch_id", nullable = false) //fk unidirectional owning side
     private Branch branch;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)//fk unidirectional owning side
     private Product product;
 
     // ========================================
@@ -64,7 +62,7 @@ public class Inventory {
 
     @PrePersist
     public void prePersist() {
-        this.lastUpdated = LocalDateTime.now();
+//        this.lastUpdated = LocalDateTime.now();
         this.createdAt = LocalDateTime.now();
         if (this.quantity == null) {
             this.quantity = 0;

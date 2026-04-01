@@ -37,12 +37,12 @@ public class UserRoleMapping {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)//FK.  bidirectional -- owning side
     @NotNull
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false) // fk unidirectional -- owning side
     @NotNull
     private Role role;
 
@@ -51,7 +51,7 @@ public class UserRoleMapping {
      * Null for ADMIN.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store_id") // fk unidirectional owing side
     private Store store;
 
     /**
@@ -60,12 +60,12 @@ public class UserRoleMapping {
      * One user can also have BRANCH_CASHIER rows for their own branches.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_id")
+    @JoinColumn(name = "branch_id") //fk  unidirectional owning side
     private Branch branch;
 
     /** Who assigned this role — Admin or Store Manager. */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_by_id", nullable = false)
+    @JoinColumn(name = "assigned_by_id", nullable = false) // fk unidirectional owning side --no back reference
     @NotNull
     private User assignedBy;// createdBy
 

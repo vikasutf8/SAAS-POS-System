@@ -12,6 +12,10 @@ uniqueConstraints = {
         name = "customer_email",
         columnNames = {"email"}
 )
+        },
+        indexes = {
+                @Index(name = "idx_customer_email", columnList = "email")
+
         }
 )
 @NoArgsConstructor
@@ -41,7 +45,7 @@ public class Customer {
     @PrePersist
     public void prePersist(){
         this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+//        this.updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate

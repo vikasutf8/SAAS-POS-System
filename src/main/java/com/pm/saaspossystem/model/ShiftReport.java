@@ -8,7 +8,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "shift_reports")
+@Table(name = "shift_reports",
+        indexes = {
+                @Index(name = "idx_shift_report_cashier_id", columnList = "cashier_id"),
+                @Index(name = "idx_shift_report_branch_id", columnList = "branch_id"),
+                @Index(name = "idx_shift_report_shift_starts", columnList = "shiftStart"),
+                @Index(name = "idx_shift_report_shift_ends", columnList = "shiftEnd"),
+
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor

@@ -16,7 +16,13 @@ import java.time.LocalDateTime;
 @Table( name = "products",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_product_sku", columnNames = "sku")
-        })
+        },
+        indexes = {
+                @Index(name = "idx_product_sku", columnList = "sku"),
+                @Index(name = "idx_product_category", columnList = "category_id"),
+                @Index(name = "idx_product_store", columnList = "store_id")
+        }
+)
 @Getter
 @Setter
 @Builder
@@ -67,13 +73,13 @@ public class Product {
 
 //     Many products belong to one category
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false) // fk unidirectional owning side
     @NotNull(message = "Category is required")
     private Category category;
 
     // Many products belong to one store
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false)
+    @JoinColumn(name = "store_id", nullable = false) // fk unidirectional owning side
     @NotNull(message = "Store is required")
     private Store store;
 
