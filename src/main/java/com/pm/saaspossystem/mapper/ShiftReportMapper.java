@@ -27,13 +27,6 @@ public class ShiftReportMapper {
 
                 .cashierId(shiftReport.getCashier() != null ? shiftReport.getCashier().getId() : null)
                 .branchId(shiftReport.getBranch() != null ? shiftReport.getBranch().getId() : null)
-
-                .cashier(shiftReport.getCashier() != null ?
-                        UserMapper.toDto(shiftReport.getCashier()) : null)
-
-                .branch(shiftReport.getBranch() != null ?
-                        BranchMapper.toDto(shiftReport.getBranch()) : null)
-
                 .paymentSummeries(shiftReport.getPaymentSummeries())
 
                 .topSellingProducts(
@@ -63,8 +56,7 @@ public class ShiftReportMapper {
                                 : null
                 )
 
-                .createdAt(shiftReport.getCreatedAt())
-                .updatedAt(shiftReport.getUpdatedAt())
+
 
                 .build();
     }
@@ -119,9 +111,6 @@ public class ShiftReportMapper {
                                         .collect(Collectors.toList())
                                 : null
                 )
-
-                .createdAt(dto.getCreatedAt())
-                .updatedAt(dto.getUpdatedAt())
 
                 .build();
     }

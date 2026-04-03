@@ -38,16 +38,8 @@ public class UserDto {
 
     private boolean isActive;
 
-    /**
-     * Direct store link on User entity (relevant for STORE_MANAGER).
-     * Null for ADMIN, BRANCH_MANAGER, BRANCH_CASHIER.
-     */
-    private Long storeId;
-
     /** All role assignments — each with its own store/branch context */
     private List<RoleName> roles;
-
-    private List<UserRoleMappingDto> userRoleMappings;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

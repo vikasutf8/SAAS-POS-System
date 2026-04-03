@@ -1,11 +1,10 @@
 package com.pm.saaspossystem.payload.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 
 @Data
@@ -15,15 +14,11 @@ import java.time.LocalDateTime;
 public class InventoryDto {
 
     private Long id;
-
+    @NotBlank(message = "Branch is required")
     private Long branchId;
-
+    @NotBlank(message = "Product is required")
     private Long productId;
 
     private Integer quantity;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime lastUpdated;
 
 }

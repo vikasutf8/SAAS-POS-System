@@ -24,7 +24,8 @@ public class StoreContactDto {
 
     @NotBlank(message = "Address is required")
     private String address;
-
+    @NotBlank(message = "Address is required")
     private String city;
+    @NotBlank(message = "Address is required")
     private String pincode;
 }

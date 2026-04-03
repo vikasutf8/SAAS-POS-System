@@ -18,7 +18,9 @@ public class OrderItemDto {
 
     private Double price;
 
-    private ProductDto product;
+//    private ProductDto product;
+
+
     private Long productId;
 
     private Long orderId ;

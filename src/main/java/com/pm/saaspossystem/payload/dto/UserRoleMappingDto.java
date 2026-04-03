@@ -1,6 +1,5 @@
 package com.pm.saaspossystem.payload.dto;
 
-import com.pm.saaspossystem.domain.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +13,9 @@ public class UserRoleMappingDto {
 
     private Long id;
 
-    private RoleName roleName;
+    private Long userId;
+
+    private Long roleId;
 
     /** Populated for STORE_MANAGER */
     private Long storeId;

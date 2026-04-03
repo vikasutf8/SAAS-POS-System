@@ -39,8 +39,7 @@ public class ProductMapper {
                                 ? product.getCategory().getId()
                                 : null
                 )
-                .createdAt(product.getCreatedAt())
-                .updatedAt(product.getUpdatedAt())
+
                 .build();
     }
 

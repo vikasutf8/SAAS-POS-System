@@ -20,8 +20,6 @@ public class CustomerMapper {
                 .fullName(customer.getFullName())
                 .email(customer.getEmail())
                 .phone(customer.getPhone())
-                .createdAt(customer.getCreatedAt())
-                .updatedAt(customer.getUpdatedAt())
                 .build();
     }
 
@@ -36,8 +34,6 @@ public class CustomerMapper {
                 .fullName(dto.getFullName())
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
-                .createdAt(dto.getCreatedAt())
-                .updatedAt(dto.getUpdatedAt())
                 .build();
     }
 

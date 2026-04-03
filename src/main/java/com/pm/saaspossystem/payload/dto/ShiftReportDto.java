@@ -25,10 +25,6 @@ public class ShiftReportDto {
 
     private Integer totalOrders;
 
-
-    private UserDto cashier;
-    private BranchDto branch;
-
     private Long cashierId;
     private Long branchId;
 
@@ -42,6 +38,4 @@ public class ShiftReportDto {
 
     private List<RefundDto> refunds;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

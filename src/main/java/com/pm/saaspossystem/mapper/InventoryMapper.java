@@ -33,8 +33,6 @@ public class InventoryMapper {
                 )
 
                 .quantity(inventory.getQuantity())
-                .createdAt(inventory.getCreatedAt())
-                .lastUpdated(inventory.getLastUpdated())
                 .build();
     }
 

@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -19,13 +18,6 @@ public class OrderDto {
     private Long id;
 
     private Double totalAmount;
-
-    private LocalDateTime createdAt;
-
-
-    private BranchDto branch;
-    private UserDto cashier;
-    private CustomerDto customer;
 
     private  Long branchId;
     private Long cashierId; // userId

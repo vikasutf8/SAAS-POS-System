@@ -113,19 +113,8 @@ public class UserMapper {
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .isActive(user.isActive())
-                .storeId(user.getStore() != null ? user.getStore().getId() : null)
 
-                // ✅ flat role list — used in JWT / signup response
-                .roles(
-                        user.getRoleNames() != null
-                                ? user.getRoleNames()
-                                : Collections.emptyList()
-                )
 
-                // ✅ detailed mappings — store/branch context per role
-//                .userRoleMappings(
-//                        toRoleMappingDtoList(user.getUserroleMappings())
-//                )
 
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
@@ -148,7 +137,7 @@ public class UserMapper {
     private static UserRoleMappingDto toRoleMappingDto(UserRoleMapping mapping) {
         return UserRoleMappingDto.builder()
                 .id(mapping.getId())
-                .roleName(mapping.getRole().getName())
+
                 .storeId(mapping.getStore() != null ? mapping.getStore().getId() : null)
                 .branchId(mapping.getBranch() != null ? mapping.getBranch().getId() : null)
                 .assignedById(mapping.getAssignedBy().getId())

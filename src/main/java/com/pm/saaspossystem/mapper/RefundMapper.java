@@ -17,19 +17,10 @@ public class RefundMapper {
                 .reason(refund.getReason())
                 .amount(refund.getAmount())
                 .paymentType(refund.getPaymentType())
-                .createdAt(refund.getCreatedAt())
-                .updatedAt(refund.getUpdatedAt())
-
                 .orderId(refund.getOrder() != null ? refund.getOrder().getId() : null)
                 .shiftReportId(refund.getShiftReport() != null ? refund.getShiftReport().getId() : null)
                 .cashierId(refund.getCashier() != null ? refund.getCashier().getId() : null)
                 .branchId(refund.getBranch() != null ? refund.getBranch().getId() : null)
-
-                .order(refund.getOrder() != null ? OrderMapper.toDto(refund.getOrder()) : null)
-//                .shiftReport(refund.getShiftReport() != null ? ShiftReportMapper.toDto(refund.getShiftReport()) : null)
-                .cashier(refund.getCashier() != null ? UserMapper.toDto(refund.getCashier()) : null)
-                .branch(refund.getBranch() != null ? BranchMapper.toDto(refund.getBranch()) : null)
-
                 .build();
     }
 
@@ -46,8 +37,7 @@ public class RefundMapper {
                 .reason(dto.getReason())
                 .amount(dto.getAmount())
                 .paymentType(dto.getPaymentType())
-                .createdAt(dto.getCreatedAt())
-                .updatedAt(dto.getUpdatedAt())
+
 
                 .order(dto.getOrderId() != null
                         ? Order.builder().id(dto.getOrderId()).build()

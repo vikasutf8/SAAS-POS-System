@@ -17,7 +17,7 @@ public class OrderMapper {
         return OrderDto.builder()
                 .id(order.getId())
                 .totalAmount(order.getTotalAmount())
-                .createdAt(order.getCreatedAt())
+
                 .branchId(order.getBranch() != null ? order.getBranch().getId() : null)
                 .cashierId(order.getCashier() != null ? order.getCashier().getId() : null)
                 .customerId(order.getCustomer() != null ? order.getCustomer().getId() : null)
@@ -40,7 +40,7 @@ public class OrderMapper {
         Order order = Order.builder()
                 .id(dto.getId())
                 .totalAmount(dto.getTotalAmount())
-                .createdAt(dto.getCreatedAt())
+
                 .paymentType(dto.getPaymentType())
                 .orderStatus(dto.getOrderStatus())
                 .branch(
