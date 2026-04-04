@@ -10,7 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -40,8 +39,8 @@ public class UserDto {
 
     /** All role assignments — each with its own store/branch context */
     private List<RoleName> roles;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime lastLogin;
+//
+//    private LocalDateTime createdAt;
+//    private LocalDateTime updatedAt;
+//    private LocalDateTime lastLogin;
 }

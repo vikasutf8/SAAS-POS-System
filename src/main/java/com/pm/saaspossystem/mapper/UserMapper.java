@@ -116,9 +116,9 @@ public class UserMapper {
 
 
 
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .lastLogin(user.getLastLogin())
+//                .createdAt(user.getCreatedAt())
+//                .updatedAt(user.getUpdatedAt())
+//                .lastLogin(user.getLastLogin())
                 .build();
     }
 

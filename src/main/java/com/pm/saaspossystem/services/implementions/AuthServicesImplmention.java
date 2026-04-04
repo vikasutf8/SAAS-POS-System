@@ -4,7 +4,6 @@ import com.pm.saaspossystem.configurations.JwtProvider;
 import com.pm.saaspossystem.domain.RoleName;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.UserMapper;
-import com.pm.saaspossystem.model.Role;
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.model.UserRoleMapping;
 import com.pm.saaspossystem.payload.dto.UserDto;
@@ -50,7 +49,8 @@ public class AuthServicesImplmention implements AuthServices {
  *   "password": "StorePass@456",
  *   "phone": "9123456780",
  *   "email": "ravi@saaspos.com",
- *   "roleName": ["STORE_MANAGER","BRANCH_MANAGER","CASHIER"]
+ *   "isActive" :true
+ *   "roles": ["STORE_MANAGER","BRANCH_MANAGER","CASHIER"]
  *
  * }
  */
@@ -60,44 +60,38 @@ public class AuthServicesImplmention implements AuthServices {
         }
 
         // 2. Role Validation & Fetching
-        List<Role> roles = validateAndFetchRoles(userDto.getRoles());
-        log.info("Validated roles for signup: {}", roles.stream().map(Role::getName).toList());
-/*
-[
-  Role { id=2, name=STORE_MANAGER },
-  Role { id=3, name=BRANCH_MANAGER }
-]
- */
-        //  3. Create new user
-        User newUser = UserMapper.toEntity(userDto);
+        List<RoleName> roles = userDto.getRoles();
+            log.info("Validating roles: {}", roles);
+            if(roles.isEmpty()){
+                throw new IllegalArgumentException("At least one role must be assigned");
+            }
 
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        newUser.setRoleNames(userDto.getRoles().stream().map(roleName -> roleName).toList());
 
-        log.info("Creating user with roles: {}", newUser.getRoleNames());
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        User savedUser =userRepository.save(UserMapper.toEntity(userDto));
 
-        User savedUser = userRepository.save(newUser);
-
-        // 4. store userRoleMapping
-        for (Role role : roles) {
-            UserRoleMapping mapping = UserRoleMapping.builder()
-                    .user(savedUser)
-                    .role(role)
-                    .assignedBy(savedUser) // assigner
-                    .build();
-
-            userRoleMappingRepository.save(mapping);
-        }
+        roles.stream()
+                .map(role -> roleRepository.findByName(role)
+                        .orElseThrow(() -> new IllegalArgumentException(STR."Role not found with ID: \{role}")))
+                .forEach(role -> {
+                    UserRoleMapping mapping = UserRoleMapping.builder()
+                            .user(savedUser)
+                            .role(role)
+                            .assignedBy(savedUser) // assigner
+                            .build();
+                    userRoleMappingRepository.save(mapping);
+                });
 
         // 5. Create Authentication object
-        Authentication authentication = buildAuthentication(savedUser);
+        Authentication authentication = buildAuthentication(userDto);
 
         // 6. Set Security Context
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 7 Generate JWT
         String token = jwtProvider.generateAccessToken(authentication);
-
+        log.info("Generated JWT for user: {}, roles: {}, token: {}",
+                authentication, token);
         // 8 Map to DTO (manual for now)
         UserDto responseUser = UserMapper.toDto(savedUser);
 
@@ -129,6 +123,7 @@ public class AuthServicesImplmention implements AuthServices {
         // 4. Update lastLogin
         User user = userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new UserExceptions("User not found"));
+
         user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);
 
@@ -142,19 +137,21 @@ public class AuthServicesImplmention implements AuthServices {
 
 
 
-    private Authentication buildAuthentication(User user) {
+    private Authentication buildAuthentication(UserDto user) {
 
         // Each role → its own GrantedAuthority  (fixes the List.toString() bug)
-        List<GrantedAuthority> authorities = user.getRoleNames().stream()
+        List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(r -> new SimpleGrantedAuthority("ROLE_" + r.name()))
                 .collect(Collectors.toList());
-
+        log.info("Building Authentication for user: {}, roles: {}, authorities: {}",
+                user.getEmail(), user.getRoles(), authorities);
         return new UsernamePasswordAuthenticationToken(
                 user.getEmail(),
                 user.getPassword(),
                 authorities
         );
     }
+
     private Authentication authenticate(String email, String password) {
 
         // 1. Find user or throw
@@ -166,32 +163,32 @@ public class AuthServicesImplmention implements AuthServices {
             throw new BadCredentialsException("Invalid email or password");
         }
 
-        return buildAuthentication(user);
+        return buildAuthentication(UserMapper.toDto(user));
     }
 
-    private List<Role> validateAndFetchRoles(List<RoleName> roleNames) {
-
-        // 1. ADMIN must be alone
-        if (roleNames.contains(RoleName.ADMIN) && roleNames.size() > 1) {
-            throw new IllegalArgumentException("ADMIN cannot be combined with other roles");
-        }
-
-        // 2. Single DB call — fetch all at once
-        List<Role> foundRoles = roleRepository.findAllByNameIn(roleNames);
-
-        // 3. Detect any invalid role names
-        if (foundRoles.size() != roleNames.size()) {
-            List<RoleName> foundNames = foundRoles.stream()
-                    .map(Role::getName)
-                    .toList();
-
-            List<RoleName> invalidRoles = roleNames.stream()
-                    .filter(r -> !foundNames.contains(r))
-                    .toList();
-
-            throw new IllegalArgumentException("Invalid roles: " + invalidRoles);
-        }
-
-        return foundRoles;
-    }
+//    private List<Role> validateAndFetchRoles(List<RoleName> roleNames) {
+//
+//        // 1. ADMIN must be alone
+//        if (roleNames.contains(RoleName.ADMIN) && roleNames.size() > 1) {
+//            throw new IllegalArgumentException("ADMIN cannot be combined with other roles");
+//        }
+//
+//        // 2. Single DB call — fetch all at once
+//        List<Role> foundRoles = roleRepository.findAllByNameIn(roleNames);
+//
+//        // 3. Detect any invalid role names
+//        if (foundRoles.size() != roleNames.size()) {
+//            List<RoleName> foundNames = foundRoles.stream()
+//                    .map(Role::getName)
+//                    .toList();
+//
+//            List<RoleName> invalidRoles = roleNames.stream()
+//                    .filter(r -> !foundNames.contains(r))
+//                    .toList();
+//
+//            throw new IllegalArgumentException("Invalid roles: " + invalidRoles);
+//        }
+//
+//        return foundRoles;
+//    }
 }
