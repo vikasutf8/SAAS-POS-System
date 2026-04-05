@@ -37,6 +37,9 @@ public class BranchDto {
 
     private Long managerId; //userId
 
+    private StoreDto store;
+    private UserDto manager;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

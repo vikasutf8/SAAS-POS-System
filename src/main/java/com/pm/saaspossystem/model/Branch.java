@@ -71,23 +71,8 @@ public class Branch {
     @NotNull
     private Store store;
 
-    /**
-     * Who created this branch — Admin or Store Manager.
-     * Admin can never be branch manager, but CAN create branches.
-     */
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "created_by_id", nullable = false)
-//    @NotNull
-//    private User createdBy;
 
-    /**
-     * The assigned Branch Manager.
-     * - Cannot be the Admin.
-     * - Can be the Store Manager (only for 1 branch).
-     * - A dedicated Branch Manager can manage max 2 branches
-     *   (enforced via UserRoleMapping count check in service layer).
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE) // as branch manager is user only one branch else no use
     @JoinColumn(name = "branch_manager_id")
     private User branchManager;
 

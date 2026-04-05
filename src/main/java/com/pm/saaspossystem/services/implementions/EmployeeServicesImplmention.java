@@ -44,11 +44,11 @@ public class EmployeeServicesImplmention implements EmployeeServices {
         employee.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         User saveEmployee =userRepository.save(employee);
-//        if(employee.getRole() == UserRole.ROLE_BRANCH_MANAGER && branch != null){
-//            branch.setManager(saveEmployee);
-//            branch.setStore(store);
-//            branchRepository.save(branch);
-//        }
+        if(employee.getRole() == UserRole.ROLE_BRANCH_MANAGER && branch != null){
+            branch.setBranchManager(saveEmployee);
+            branch.setStore(store);
+            branchRepository.save(branch);
+        }
         return UserMapper.toDto(saveEmployee);
 
 

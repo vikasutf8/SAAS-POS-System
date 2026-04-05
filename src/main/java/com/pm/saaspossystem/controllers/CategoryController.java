@@ -22,7 +22,7 @@ public class CategoryController {
     // Create Category
     // =========================================
     @PostMapping
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public CategoryDto createCategory(@RequestBody CategoryDto categoryDto)
             throws UserExceptions, IllegalAccessException {
 
@@ -33,6 +33,7 @@ public class CategoryController {
     // Get Categories By Store
     // =========================================
     @GetMapping("/store/{storeId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public List<CategoryDto> getCategoriesByStore(@PathVariable Long storeId) {
 
         return categoryServices.getCategoriesByStore(storeId);
@@ -42,6 +43,7 @@ public class CategoryController {
     // Update Category
     // =========================================
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public CategoryDto updateCategory(@PathVariable Long id,
                                       @RequestBody CategoryDto categoryDto)
             throws UserExceptions, IllegalAccessException {
@@ -53,6 +55,7 @@ public class CategoryController {
     // Delete Category
     // =========================================
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public void deleteCategory(@PathVariable Long id)
             throws UserExceptions, IllegalAccessException {
 
