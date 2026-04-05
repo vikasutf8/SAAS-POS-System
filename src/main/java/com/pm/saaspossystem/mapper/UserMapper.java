@@ -20,6 +20,7 @@ public class UserMapper {
                 // password intentionally omitted
                 .email(user.getEmail())
                 .phone(user.getPhone())
+                .role(user.getRole())
                 .storeId(user.getStore() != null ? user.getStore().getId() : null)
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())

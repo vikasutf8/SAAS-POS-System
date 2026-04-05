@@ -85,7 +85,7 @@ public class UserServiceImplmentions implements UserService {
     @Override
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
-
+        System.out.println("Users count: " + users.size());
         return users.stream()
                 .map(UserMapper::toDto)
                 .toList();
