@@ -1,5 +1,6 @@
 package com.pm.saaspossystem.model;
 
+import com.pm.saaspossystem.domain.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,8 +12,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(
@@ -62,13 +61,15 @@ public class User {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    /**
-     * All role assignments for this user (with store/branch context).
-     * Branch manager's branch associations live here — not as a direct FK —
-     * because one user can manage up to 2 branches.
-     */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserRoleMapping> roleMappings = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
+
+    private UserRole role;
+
+
+
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

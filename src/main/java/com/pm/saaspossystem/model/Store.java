@@ -4,15 +4,12 @@ import com.pm.saaspossystem.domain.StoreStatus;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(
@@ -61,29 +58,8 @@ public class Store {
     @Valid
     private StoreContact contact;
 
-    /**
-     * The Admin who created this store.
-     * Many stores can be created by one admin (but in practice only one admin exists).
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_id", nullable = false)
-    @NotNull(message = "Created by (admin) is required")
-    private User createdBy;
-
-    /**
-     * The assigned Store Manager for this store.
-     * Unique: one user can manage only one store.
-     * Nullable: store may not have a manager yet.
-     */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_manager_id", unique = true)
-    private User storeManager;
-
-    /**
-     * All branches under this store.
-     */
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<Branch> branches = new ArrayList<>();
+    @OneToOne
+    private User storeAdmin;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

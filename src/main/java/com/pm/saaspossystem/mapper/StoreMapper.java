@@ -28,7 +28,7 @@ public class StoreMapper {
                 .storeType(store.getStoreType())
                 .description(store.getDescription())
                 .status(store.getStatus())
-                .storeAdminId(store.getStoreAdmin() != null ? store.getStoreAdmin().getId() : null)
+                .storeAdmin(UserMapper.toDto(store.getStoreAdmin()))
                 .contact(toContactDto(store.getContact()))
                 .createdAt(store.getCreatedAt())
                 .updatedAt(store.getUpdatedAt())

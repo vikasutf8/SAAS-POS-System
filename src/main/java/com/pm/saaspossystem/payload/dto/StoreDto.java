@@ -23,7 +23,7 @@ public class StoreDto {
     private String brand;
 
     // Store Admin (One-to-One)
-    private Long storeAdminId; // userId of the store admin
+    private UserDto storeAdmin; // userId of the store admin
 
     // Store Type
     @NotBlank(message = "Store type is required")

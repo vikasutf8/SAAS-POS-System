@@ -2,6 +2,7 @@ package com.pm.saaspossystem.controllers;
 
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.payload.dto.UserDto;
+import com.pm.saaspossystem.payload.request.LoginRequestDto;
 import com.pm.saaspossystem.payload.response.AuthResponse;
 import com.pm.saaspossystem.services.AuthServices;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ public class AuthController {
     // ✅ Login Endpoint
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
-            @Valid @RequestBody UserDto userDto) throws UserExceptions {
+            @Valid @RequestBody LoginRequestDto userDto) throws UserExceptions {
 
         AuthResponse response = authService.login(userDto);
         return ResponseEntity.ok(response);

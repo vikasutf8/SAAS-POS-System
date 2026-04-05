@@ -49,6 +49,7 @@ public class UserMapper {
                 .password(dto.getPassword())   // raw here — hash in service before saving
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
+                .role(dto.getRole())
                 // store resolved via service using dto.getStoreId()
                 .build();
     }

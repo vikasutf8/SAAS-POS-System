@@ -33,15 +33,6 @@ public class StoreServicesImplmention implements StoreServices {
         Store store = StoreMapper.toEntity(storeDto, UserMapper.toEntity(user));
         log.info(STR."store entity \{store}");
         Store savedStore =storeRepository.save(store);
-        // this storeId should be set to the user who created the store, so that we can easily fetch the store by admin
-
-        // 3. Set bi-directional relation
-//        store.setStoreAdmin(UserMapper.toEntity(user));   // owning side
-//        user.setStoreId(user.getStoreId()) ;// inverse side
-//log.info(STR."user after setting relation \{user}");
-//log.info(STR."store after setting relation \{store}");
-
-
         return StoreMapper.toDto(savedStore);
     }
 

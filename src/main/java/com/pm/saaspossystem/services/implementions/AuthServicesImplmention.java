@@ -5,10 +5,12 @@ import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.payload.dto.UserDto;
+import com.pm.saaspossystem.payload.request.LoginRequestDto;
 import com.pm.saaspossystem.payload.response.AuthResponse;
 import com.pm.saaspossystem.repository.UserRepository;
 import com.pm.saaspossystem.services.AuthServices;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,11 +20,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServicesImplmention implements AuthServices {
@@ -33,6 +36,7 @@ public class AuthServicesImplmention implements AuthServices {
     private final JwtProvider jwtProvider;
     private final CustomUserServiceImplmention customUserServiceImplmention;
     @Override
+    @Transactional
     public AuthResponse signup(UserDto userDto) throws UserExceptions {
 
         // ✅ 1. Check if user already exists
@@ -49,7 +53,7 @@ public class AuthServicesImplmention implements AuthServices {
         User newUser = UserMapper.toEntity(userDto);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         User savedUser = userRepository.save(newUser);
-
+        log.info(STR."this is saved user\{savedUser.getRole()}");
         // ✅ 4. Create Authentication object
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 savedUser.getEmail(),
@@ -74,7 +78,7 @@ public class AuthServicesImplmention implements AuthServices {
                 .build();
     }
     @Override
-    public AuthResponse login(UserDto userDto) throws UserExceptions {
+    public AuthResponse login(LoginRequestDto userDto) throws UserExceptions {
         String email = userDto.getEmail();
         String password = userDto.getPassword();
         // ✅ 1. Authenticate user
@@ -84,6 +88,7 @@ public class AuthServicesImplmention implements AuthServices {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // ✅ 3. Generate JWT
+
         String token = jwtProvider.generateAccessToken(authentication);
 
         // ✅ 4. Fetch user from DB

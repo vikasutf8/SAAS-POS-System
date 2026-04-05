@@ -75,10 +75,10 @@ public class Branch {
      * Who created this branch — Admin or Store Manager.
      * Admin can never be branch manager, but CAN create branches.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_id", nullable = false)
-    @NotNull
-    private User createdBy;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "created_by_id", nullable = false)
+//    @NotNull
+//    private User createdBy;
 
     /**
      * The assigned Branch Manager.
