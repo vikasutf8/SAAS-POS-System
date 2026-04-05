@@ -29,9 +29,13 @@ public class StoreServicesImplmention implements StoreServices {
 
     @Override
     public StoreDto createStore(StoreDto storeDto, UserDto user) {
-
+        log.info("Creating store with DTO: {}", storeDto);
+        log.info("userdto {}", UserMapper.toEntity(user).getId());
         Store store = StoreMapper.toEntity(storeDto, UserMapper.toEntity(user));
-        log.info(STR."store entity \{store}");
+        log.info("store entity: admin={}, id={}, code={}",
+                store.getStoreAdmin().getId(),
+                store.getId(),
+                store.getStoreCode());
         Store savedStore =storeRepository.save(store);
         return StoreMapper.toDto(savedStore);
     }
@@ -52,6 +56,9 @@ public class StoreServicesImplmention implements StoreServices {
     @Override
     public Store getStoreByAdmin() throws UserExceptions {
         UserDto admin =userService.getCurrentUser();
+        if(!admin.getRole().name().equals("ROLE_ADMIN")){
+            throw new UserExceptions("User should be an admin to access this resource");
+        }
         return storeRepository.findByStoreAdminId(admin.getId());
     }
 

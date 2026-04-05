@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v2/store")
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ADMIN')")
 public class StoreController {
     private final StoreServices storeServices;
     private final UserService userService;
@@ -29,9 +28,8 @@ public class StoreController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public StoreDto createStore(@RequestBody StoreDto storeDto) throws UserExceptions {
-//        log.info(   "Creating store with data: " + storeDto);
+
         UserDto currentUser = userService.getCurrentUser();
-//        log.info("user crrent "+currentUser);
         return storeServices.createStore(storeDto, currentUser);
     }
 
@@ -39,6 +37,7 @@ public class StoreController {
     // Get Store By ID
     // =========================================
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public StoreDto getStoreById(@PathVariable Long id) throws Exception {
         return storeServices.getStoreById(id);
     }
@@ -47,6 +46,7 @@ public class StoreController {
     // Get All Stores
     // =========================================
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<StoreDto> getAllStores() {
         return storeServices.getAllStores();
     }
@@ -55,6 +55,7 @@ public class StoreController {
     // Get Store By Admin (Current User)
     // =========================================
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public Store getStoreByAdmin() throws UserExceptions {
         return storeServices.getStoreByAdmin();
     }
@@ -63,6 +64,7 @@ public class StoreController {
     // Get Store By Employee
     // =========================================
     @GetMapping("/employee")
+    @PreAuthorize("hasRole('STORE_MANAGER') or hasRole('BRANCH_MANAGER') or hasRole('BRANCH_CASHIER')")
     public StoreDto getStoreByEmployee() throws UserExceptions {
         return storeServices.getStoreByEmployee();
     }
@@ -71,6 +73,7 @@ public class StoreController {
     // Update Store
     // =========================================
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public StoreDto updateStore(
             @PathVariable Long id,
             @RequestBody StoreDto storeDto
@@ -79,7 +82,8 @@ public class StoreController {
         return storeServices.updateStore(id, storeDto);
     }
 
-    @PutMapping("/{id}/status")
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public StoreDto moderateStore(
             @PathVariable Long id,
             @RequestParam StoreStatus storeStatus
@@ -92,6 +96,7 @@ public class StoreController {
     // Soft Delete Store By ID
     // =========================================
     @PutMapping("delete/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE_MANAGER')")
     public StoreDto deleteStore(@PathVariable Long id) throws UserExceptions {
         return storeServices.deleteStore(id);
     }
@@ -100,6 +105,7 @@ public class StoreController {
     // Delete Store Of Current Admin
     // =========================================
     @DeleteMapping("delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteCurrentUserStore() throws UserExceptions {
         storeServices.deleteStore();
     }

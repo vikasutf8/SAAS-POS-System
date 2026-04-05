@@ -46,11 +46,16 @@ public class UserMapper {
         if (dto == null) return null;
 
         return User.builder()
+                .id(dto.getId())
                 .fullName(dto.getFullName())
                 .password(dto.getPassword())   // raw here — hash in service before saving
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
                 .role(dto.getRole())
+//                .storeId(user.getStore() != null ? user.getStore().getId() : null)
+                .createdAt(dto.getCreatedAt())
+                .updatedAt(dto.getUpdatedAt())
+                .lastLogin(dto.getLastLogin())
                 // store resolved via service using dto.getStoreId()
                 .build();
     }

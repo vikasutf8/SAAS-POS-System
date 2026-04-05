@@ -66,7 +66,7 @@ public class User {
     @JoinColumn(name = "branch_id")
     private Branch branch;
 
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     private UserRole role;
 
 

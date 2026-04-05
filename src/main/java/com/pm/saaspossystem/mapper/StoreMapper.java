@@ -25,6 +25,7 @@ public class StoreMapper {
         return StoreDto.builder()
                 .id(store.getId())
                 .brand(store.getBrand())
+                .storeCode(store.getStoreCode())
                 .storeType(store.getStoreType())
                 .description(store.getDescription())
                 .status(store.getStatus())
@@ -47,6 +48,7 @@ public class StoreMapper {
         return Store.builder()
                 .id(dto.getId())
                 .brand(dto.getBrand())
+                .storeCode(dto.getStoreCode())
                 .storeType(dto.getStoreType())
                 .description(dto.getDescription())
                 .status(dto.getStatus()) // usually ignored on createfd

@@ -58,7 +58,7 @@ public class Store {
     @Valid
     private StoreContact contact;
 
-    @OneToOne
+    @OneToOne()
     private User storeAdmin;
 
     @CreatedDate
