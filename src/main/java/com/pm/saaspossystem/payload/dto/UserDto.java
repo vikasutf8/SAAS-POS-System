@@ -39,6 +39,8 @@ public class UserDto {
 
     /** All role assignments — each with its own store/branch context */
     private List<RoleName> roles;
+
+    private Long storeId; // for STORE_MANAGER role
 //
 //    private LocalDateTime createdAt;
 //    private LocalDateTime updatedAt;

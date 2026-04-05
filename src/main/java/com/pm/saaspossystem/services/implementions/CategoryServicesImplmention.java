@@ -1,6 +1,5 @@
 package com.pm.saaspossystem.services.implementions;
 
-import com.pm.saaspossystem.domain.UserRole;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.CategoryMapper;
 import com.pm.saaspossystem.mapper.UserMapper;
@@ -40,7 +39,7 @@ public class CategoryServicesImplmention implements CategoryServices {
 
 
        Store store = storeRepository.findById(user.getStoreId()).orElseThrow(() -> new UserExceptions("Store not Found"));
-       log.info(STR."store details\{store.getId()},\{store.getStoreAdmin().getId()}");
+//       log.info(STR."store details\{store.getId()},\{store.getStoreAdmin().getId()}");
 
 
         Category category = Category.builder()
@@ -115,15 +114,15 @@ public class CategoryServicesImplmention implements CategoryServices {
 
     private void checkAuthortize(User user, Store store) throws IllegalAccessException {
 
-        Boolean isAdmin = user.getRole().equals(UserRole.ROLE_ADMIN);
-        Boolean isManager = user.getRole().equals(UserRole.ROLE_STORE_MANAGER);
-        Boolean isSameStoreManager = user.equals(store.getStoreAdmin());
-
-        log.info(STR."isAdmin\{isAdmin}, isManager\{isManager}, isSameStoreManager\{isSameStoreManager}");
-
-        if(!(isAdmin && isSameStoreManager) && !isManager){
-            throw  new IllegalAccessException("Illegel Access");
-        }
+//        Boolean isAdmin = user.getRole().equals(UserRole.ROLE_ADMIN);
+//        Boolean isManager = user.getRole().equals(UserRole.ROLE_STORE_MANAGER);
+//        Boolean isSameStoreManager = user.equals(store.getStoreAdmin());
+//
+//        log.info(STR."isAdmin\{isAdmin}, isManager\{isManager}, isSameStoreManager\{isSameStoreManager}");
+//
+//        if(!(isAdmin && isSameStoreManager) && !isManager){
+//            throw  new IllegalAccessException("Illegel Access");
+//        }
 
     }
 }

@@ -3,11 +3,9 @@ package com.pm.saaspossystem.services.implementions;
 import com.pm.saaspossystem.domain.RoleName;
 import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.BranchMapper;
-import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.*;
 import com.pm.saaspossystem.payload.dto.BranchDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
-import com.pm.saaspossystem.payload.dto.UserRoleMappingDto;
 import com.pm.saaspossystem.repository.*;
 import com.pm.saaspossystem.services.BranchService;
 import com.pm.saaspossystem.services.UserService;
@@ -16,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -30,62 +29,35 @@ public class BranchServiceImplmentions implements BranchService {
 
     @Override
     public BranchDto createBranch(BranchDto branchDto,UserDto userDto) throws UserExceptions {
-        // 1. Caller must be ADMIN or STORE_MANAGER
-        boolean isAdmin = userDto.getRoles().contains(RoleName.ADMIN);
-        boolean isStoreManager = userDto.getRoles().contains(RoleName.STORE_MANAGER);
-        List<UserRoleMappingDto> userRoleMappingDtoList = userDto.getUserRoleMappings();
+
+        User loginUser = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new UserExceptions("User not found: " + userDto.getEmail()));
+
+        Set<UserRoleMapping> loginUserRoles = loginUser.getUserRoleMappings();
+        Long assoicateStoreId =loginUser.getStore().getId();
+
+        // find loginUser is ADMIN or STORE_MANAGER
+        boolean isAdmin = loginUserRoles.stream()
+                .anyMatch(mapping -> mapping.getRole().getName() == RoleName.ADMIN);
+        boolean isStoreManager = loginUserRoles.stream()
+                .anyMatch(mapping -> mapping.getRole().getName() == RoleName.STORE_MANAGER);
+
+
+        // in this set find having storeID and userID
+        UserRoleMapping userRoleMapping =userRoleMappingRepository.findByUserIdAndStoreId(loginUser.getId(),assoicateStoreId);
 
         if (!isAdmin && !isStoreManager) {
-            throw new UserExceptions("Only ADMIN or STORE_MANAGER can create a branch");
+            throw new UserExceptions("Only ADMIN or STORE_MANAGER can create branch");
         }
+         branchDto.setStoreId(assoicateStoreId);
+        branchDto.setCreatedById(loginUser.getId());
 
-        // 2. Fetch caller from DB (need real entity with id)
-//        User caller = userRepository.findByEmail(userDto.getEmail())
-//                .orElseThrow(() -> new UserExceptions("User not found: " + userDto.getEmail()));
+        Branch savedBranch = branchRepository.save(BranchMapper.toEntity(branchDto));
 
-        // 3. storeId must be present in UserDto
-        //    ADMIN   → has storeId on UserDto (which store they're creating branch for)
-        //    SM      → has storeId on UserDto (their own assigned store)
-        if (userDto.getStoreId() == null) {
-            throw new UserExceptions("Store id is required to create a branch");
-        }
 
-        // 4. Fetch that store from DB
-        Store store = storeRepository.findById(userDto.getStoreId())
-                .orElseThrow(() -> new UserExceptions(STR."Store not found: \{userDto.getStoreId()}"));
+        userRoleMapping.setBranch(savedBranch);
 
-        //IMPORTANT
-        // storeId and user.getID ....userId should be present in this userMapping also
-
-        // 5. Ownership check
-        //    ADMIN       → must be the one who created the store
-        //    SM          → must be the assigned manager of the store
-        if (isAdmin && !store.getCreatedBy().getId().equals(userDto.getId())) {
-            throw new UserExceptions("Admin is not the owner of this store");
-        }
-
-        if (isStoreManager && (store.getStoreManager() == null
-                || !store.getStoreManager().getId().equals(userDto.getId()))) {
-            throw new UserExceptions("Store Manager is not assigned to this store");
-        }
-
-        // 6. Build branch entity
-        Branch branch = BranchMapper.toEntity(branchDto);
-        branch.setStore(store);
-        branch.setCreatedBy(UserMapper.toEntity(userDto));
-
-        // 7. Save
-        Branch savedBranch = branchRepository.save(branch);
-        log.info("Branch created: {} under store: {}", savedBranch.getName(), store.getStoreCode());
-
-// TODO : have to add this id in userrolemapping
-        UserRoleMapping mapping =UserRoleMapping.builder()
-                .user(UserMapper.toEntity(userDto))
-                .store(store)
-                .branch(savedBranch)
-                .build();
-
-        userRoleMappingRepository.save(mapping);
+        userRoleMappingRepository.save(userRoleMapping);
 
         return BranchMapper.toDto(savedBranch);
     }
@@ -168,10 +140,10 @@ ADMIN calling
                     throw new UserExceptions("Manager account is not active");
                 }
 
-                // That person must have BRANCH_MANAGER role
-                if (!manager.getRoleNames().contains(RoleName.BRANCH_MANAGER)) {
-                    throw new UserExceptions("User " + managerId + " does not have BRANCH_MANAGER role");
-                }
+//                // That person must have BRANCH_MANAGER role
+//                if (!manager.getRoleNames().contains(RoleName.BRANCH_MANAGER)) {
+//                    throw new UserExceptions("User " + managerId + " does not have BRANCH_MANAGER role");
+//                }
 
                 // BRANCH_MANAGER can manage max 2 branches
                 long existingBranchCount = userRoleMappingRepository
@@ -192,9 +164,9 @@ ADMIN calling
             }
 
             // Manager must have BRANCH_MANAGER role
-            if (!manager.getRoleNames().contains(RoleName.BRANCH_MANAGER)) {
-                throw new UserExceptions(STR."User \{managerId} does not have BRANCH_MANAGER role");
-            }
+//            if (!manager.getRoleNames().contains(RoleName.BRANCH_MANAGER)) {
+//                throw new UserExceptions(STR."User \{managerId} does not have BRANCH_MANAGER role");
+//            }
 
             // BRANCH_MANAGER can manage max 2 branches
             long existingBranchCount = userRoleMappingRepository

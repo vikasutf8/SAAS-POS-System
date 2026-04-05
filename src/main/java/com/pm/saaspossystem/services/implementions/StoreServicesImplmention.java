@@ -6,10 +6,12 @@ import com.pm.saaspossystem.exceptions.UserExceptions;
 import com.pm.saaspossystem.mapper.StoreMapper;
 import com.pm.saaspossystem.mapper.UserMapper;
 import com.pm.saaspossystem.model.Store;
+import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.model.UserRoleMapping;
 import com.pm.saaspossystem.payload.dto.StoreDto;
 import com.pm.saaspossystem.payload.dto.UserDto;
 import com.pm.saaspossystem.repository.StoreRepository;
+import com.pm.saaspossystem.repository.UserRepository;
 import com.pm.saaspossystem.repository.UserRoleMappingRepository;
 import com.pm.saaspossystem.services.StoreServices;
 import com.pm.saaspossystem.services.UserService;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -28,14 +31,19 @@ import java.util.stream.Collectors;
 public class StoreServicesImplmention implements StoreServices {
 
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
     private final UserRoleMappingRepository userRoleMappingRepository;
 
     @Override
     public StoreDto createStore(StoreDto storeDto, UserDto user) throws UserExceptions {
-//1. check its admin or NOT
-        user.getRoles().stream()
-                .filter(role -> role == RoleName.ADMIN)
+
+        // get Id of user
+        Long userId =user.getId();
+        User loginUser =userRepository.findById(userId).orElseThrow(()-> new UserExceptions("User not found with id: " + userId));
+        //
+        loginUser.getUserRoleMappings().stream()
+                .filter(mapping -> mapping.getRole().getName() == RoleName.ADMIN)
                 .findFirst()
                 .orElseThrow(() -> new UserExceptions("User doesn't have permission to create store"));
 
@@ -46,7 +54,7 @@ public class StoreServicesImplmention implements StoreServices {
         }
 
         Store store = StoreMapper.toEntity(storeDto);
-        store.setCreatedBy(UserMapper.toEntity(user));
+        store.setCreatedBy(loginUser);
 
         log.info("Creating store with code: {}", store);
         Store savedStore = storeRepository.save(store);
@@ -58,91 +66,70 @@ public class StoreServicesImplmention implements StoreServices {
     @Override
     public StoreDto assigneStoreManager(Long storeId,Long managerId, UserDto user) throws UserExceptions {
 
-//        1. its should be admin
-        // 2. store should be created by this logined user
-        //3. check store exist or not
-
-        // 4. managerID or user should be exist or not
-
-        // 4a. manager should have store Manager as Role table and also if present userRoleMappping. present or not
-
-        // 4b. list. of RoleId and userId/managerId present ...check store is mapped or not
-                // 4bA. storeID != managerId
-        // not mapped -- mapped that
-        // update store as storeManageris Assibnged
-        //
-
-
-        // 1. Caller must be ADMIN
-        user.getRoles().stream()
-                .filter(role -> role == RoleName.ADMIN)
-                .findFirst()
-                .orElseThrow(() -> new UserExceptions("User doesn't have permission to assign store manager"));
-
-        // 2. Fetch admin from DB
-//        UserDto admin = userService.getUserByEmail(user.getEmail());
-
-        // 3. Store must exist
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new UserExceptions("Store not found with id: " + storeId));
+                .orElseThrow(() -> new UserExceptions(STR."Store not found with id: \{storeId}"));
 
-        // 4. Store must belong to this admin
-        if (!store.getCreatedBy().getId().equals(user.getId())) {
+        User storeManager = userRepository.findById(managerId)
+                .orElseThrow(() -> new UserExceptions(STR."User not found with id: \{managerId}"));
+        Set<UserRoleMapping> storeManagerUserRoleMapping  = storeManager.getUserRoleMappings();
+        log.info(STR."Store manager user role mapping \{storeManagerUserRoleMapping}");
+        User loginUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserExceptions(STR."User not found with id: \{user.getId()}"));
+        Set<UserRoleMapping> loginUserRoleMapping  =loginUser.getUserRoleMappings();
+        log.info(STR."login user role mapping \{loginUserRoleMapping}");
+
+
+
+        // mangerID == UserID Error
+        if(managerId.equals(user.getId())){
+            throw new UserExceptions("You cannot assign yourself as store manager");
+        }
+        // user should be admin
+        loginUserRoleMapping.stream()
+                .filter(mapping -> mapping.getRole().getName() != RoleName.ADMIN)
+                .findFirst()
+                .orElseThrow(() -> new UserExceptions("Admin user only assign store manager"));
+
+        // store createById should be user of it
+        if(!store.getCreatedBy().getId().equals(user.getId())){
             throw new UserExceptions("You are not authorized to manage this store");
         }
 
-        // 5. Manager (user) must exist
-        UserDto manager = userService.getUserById(managerId);
+        // manager not be admin
+        storeManagerUserRoleMapping.stream()
+                .filter(mapping -> mapping.getRole().getName() == RoleName.ADMIN)
+                .findFirst()
+                .ifPresent(mapping -> {
+                    try {
+                        throw new UserExceptions(STR."User with id: \{managerId} cannot be assigned as store manager because they have ADMIN role");
+                    } catch (UserExceptions e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
-        // 6. Manager must have STORE_MANAGER role in Role table
-        boolean hasStoreManagerRole = manager.getRoles()
-                .contains(RoleName.STORE_MANAGER);
+        // it should be STORE_MANAGER
+        storeManagerUserRoleMapping.stream()
+                .filter(mapping -> mapping.getRole().getName() == RoleName.STORE_MANAGER)
+                .findFirst()
+                .orElseThrow(() -> new UserExceptions(STR."User with id: \{managerId} cannot be assigned as store manager because they don't have STORE_MANAGER role"));
 
-        if (!hasStoreManagerRole) {
-            throw new UserExceptions("User id: " + managerId + " does not have STORE_MANAGER role");
-        }
+        // in manage row have to storeid and getting its id of userRoleMapping in which we have to store
+// TODO:
 
-        // 7. Check UserRoleMapping — is this manager already assigned to a store?
-        boolean alreadyMapped = userRoleMappingRepository
-                .existsByUserIdAndRoleName(managerId, RoleName.STORE_MANAGER);
 
-        if (alreadyMapped) {
-            // 7a. Is it mapped to a DIFFERENT store?
-            UserRoleMapping existingMapping = userRoleMappingRepository
-                    .findByUserIdAndRoleName(managerId, RoleName.STORE_MANAGER);
+        store.setStoreManager(storeManager);
+        Store updatedStore = storeRepository.save(store);
 
-            if(existingMapping.getStore().getId() != null){
-                throw new UserExceptions(
-                        STR."Manager is already assigned to a different store: \{existingMapping.getStore().getId()}"
-                );
-            }
 
-            log.info(STR."manager ID and SM mapping existing \{existingMapping}");
-            if (!existingMapping.getStore().getId().equals(storeId)) {
-                throw new UserExceptions(
-                        STR."Manager is already assigned to a different store: \{existingMapping.getStore().getId()}"
-                );
-            }
-
-            // 7b. Already mapped to THIS store — idempotent, just return
-            log.info("Manager {} is already assigned to store {}", managerId, storeId);
-            return StoreMapper.toDto(store);
-        }
-
-        // 8. Create UserRoleMapping for this manager → store
+        // 8. Create UserRoleMapping for this manager → store ---dont create
         UserRoleMapping mapping = UserRoleMapping.builder()
                 .store(store)
                 .assignedBy(UserMapper.toEntity(user))
                 .assignedAt(java.time.LocalDateTime.now())
                 .build();
-        log.info("Creating UserRoleMapping for manager {} → store {}"+ mapping);
-        userRoleMappingRepository.save(mapping);
-        log.info("UserRoleMapping saved for manager {} → store {}", managerId, storeId);
 
-        // 9. Set storeManager on Store entity (OneToOne)
-        store.setStoreManager(UserMapper.toEntity(manager));
-        Store updatedStore = storeRepository.save(store);
-        log.info("Store {} updated with storeManager {}", storeId, managerId);
+        userRoleMappingRepository.save(mapping);
+
 
         return StoreMapper.toDto(updatedStore);
 

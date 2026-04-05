@@ -8,9 +8,11 @@ public interface UserRoleMappingRepository extends JpaRepository<UserRoleMapping
 
      UserRoleMapping findByUserId(Long userId);
 
-     boolean existsByUserIdAndRoleName(Long userId, RoleName roleName);
-
-    UserRoleMapping findByUserIdAndRoleName(Long userId, RoleName roleName);
+//     boolean existsByUserIdAndRoleName(Long userId, RoleName roleName);
+//
+//    UserRoleMapping findByUserIdAndRoleName(Long userId, RoleName roleName);
 
     Long countByUserIdAndRoleName(Long userId, RoleName roleName);
+
+    UserRoleMapping findByUserIdAndStoreId(Long userId, Long storeId);
 }

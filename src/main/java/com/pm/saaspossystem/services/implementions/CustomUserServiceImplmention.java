@@ -3,12 +3,9 @@ package com.pm.saaspossystem.services.implementions;
 
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.repository.UserRepository;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,8 +29,8 @@ public class CustomUserServiceImplmention implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email: " + username));
 
-        GrantedAuthority authority =
-                new SimpleGrantedAuthority(user.getRole().name());
+        GrantedAuthority authority =null;
+//                new SimpleGrantedAuthority(user.get);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(authority);
