@@ -40,6 +40,4 @@ public class UserDto {
     private LocalDateTime updatedAt;
     private LocalDateTime lastLogin;
 
-//    public User orElseThrow(Object userNotFound) {
-//    }
 }

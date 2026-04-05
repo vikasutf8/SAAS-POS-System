@@ -61,7 +61,8 @@ public class UserServiceImplmentions implements UserService {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserExceptions("User not found"));
-log.info(STR."current user email \{user}");
+
+        log.info("Current user email: {}", email);
         return UserMapper.toDto(user);
     }
 
@@ -101,16 +102,4 @@ log.info(STR."current user email \{user}");
         return UserMapper.toDto(updatedUser);
     }
 
-
-    private UserDto mapToDto(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .fullName(user.getFullName())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .role(user.getRole())
-                .storeId(user.getStore().getId())
-                .lastLogin(user.getLastLogin())
-                .build();
-    }
 }

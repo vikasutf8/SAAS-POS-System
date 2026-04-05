@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,8 +48,6 @@ public class AuthServicesImplmention implements AuthServices {
         // ✅ 3. Create new user
         User newUser = UserMapper.toEntity(userDto);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-
-
         User savedUser = userRepository.save(newUser);
 
         // ✅ 4. Create Authentication object
@@ -109,26 +107,43 @@ public class AuthServicesImplmention implements AuthServices {
     }
 
     private Authentication authenticate(String email, String password) {
-   //verify password
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("Invalid email or password"));
+//   //verify password
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() ->
+//                        new UsernameNotFoundException("Invalid email or password"));
+//
+//        // ✅ Verify password using BCrypt
+//        if (!passwordEncoder.matches(password, user.getPassword())) {
+//            throw new BadCredentialsException("Invalid email or password");
+//        }
+//
+//        // ✅ Create authorities
+//        List<GrantedAuthority> authorities = List.of(
+//                new SimpleGrantedAuthority( user.getRole().name())
+//        );
+//
+//        // ✅ Return authenticated object
+//        return new UsernamePasswordAuthenticationToken(
+//                user.getEmail(),
+//                user.getPassword(),
+//                authorities
+//        );
 
-        // ✅ Verify password using BCrypt
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        UserDetails userDetails = customUserServiceImplmention.loadUserByUsername(email);
+        if(userDetails == null){
+            throw new UsernameNotFoundException("Invalid email or password");
+        }
+
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid email or password");
         }
 
-        // ✅ Create authorities
-        List<GrantedAuthority> authorities = List.of(
-                new SimpleGrantedAuthority( user.getRole().name())
-        );
-
-        // ✅ Return authenticated object
         return new UsernamePasswordAuthenticationToken(
-                user.getEmail(),
-                user.getPassword(),
-                authorities
+                userDetails.getUsername(),
+                userDetails.getPassword(),
+                userDetails.getAuthorities()
         );
     }
+
+
 }

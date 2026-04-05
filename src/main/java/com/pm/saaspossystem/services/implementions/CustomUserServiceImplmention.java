@@ -3,9 +3,8 @@ package com.pm.saaspossystem.services.implementions;
 
 import com.pm.saaspossystem.model.User;
 import com.pm.saaspossystem.repository.UserRepository;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomUserServiceImplmention implements UserDetailsService {
@@ -31,7 +31,7 @@ public class CustomUserServiceImplmention implements UserDetailsService {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email: " + username));
-
+        log.info("User found: {}", user.getEmail(),user.getRole());
         GrantedAuthority authority =
                 new SimpleGrantedAuthority(user.getRole().name());
 
