@@ -1,17 +1,28 @@
 package com.pm.saaspossystem.model;
 
-import com.pm.saaspossystem.domain.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        indexes = {
+                @Index(name = "idx_user_email", columnList = "email"),
+                @Index(name = "idx_user_phone", columnList = "phone"),
+                @Index(name = "idx_user_store", columnList = "store_id")
+        }
+)
 @Getter
 @Setter
 @Builder
@@ -24,42 +35,40 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Full name is required")
-    @Size(max = 100)
+    @NotBlank @Size(max = 100)
     @Column(nullable = false)
     private String fullName;
 
-    @NotBlank(message = "Password is required")
-    @Size(max = 100, min = 8)
+    @NotBlank @Size(min = 8, max = 100)
     @Column(nullable = false)
     private String password;
 
-    @NotBlank(message = "Phone is required")
-    @Pattern(regexp = "^[0-9]{10,15}$", message = "Invalid phone number")
+    @NotBlank @Pattern(regexp = "^[0-9]{10,15}$")
     @Column(nullable = false, unique = true, length = 15)
     private String phone;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
+    @NotBlank @Email
     @Column(nullable = false, unique = true)
     private String email;
 
-//    @OneToOne  --- bi-directional relationship is already defined in Store entity
-    @OneToOne(mappedBy = "storeAdmin", cascade = CascadeType.ALL)
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean isActive = true;
+
+    /**
+     * Populated when this user is assigned as Store Manager.
+     * Null for Admin, Branch Manager, Cashier.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
     private Store store;
 
-
-
-    @OneToOne(mappedBy = "manager", cascade = CascadeType.ALL)
-    private Branch branch;
-
-//    @OneToOne(mappedBy = "manager", cascade = CascadeType.ALL)
-//    private Branch branchManager;
-
-    @NotNull(message = "Role is required")
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRole role;
+    /**
+     * All role assignments for this user (with store/branch context).
+     * Branch manager's branch associations live here — not as a direct FK —
+     * because one user can manage up to 2 branches.
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserRoleMapping> roleMappings = new HashSet<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -70,9 +79,11 @@ public class User {
 
     private LocalDateTime lastLogin;
 
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+//        this.isActive =true;
     }
 
     @PreUpdate

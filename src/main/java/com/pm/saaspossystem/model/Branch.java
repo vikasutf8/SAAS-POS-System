@@ -12,8 +12,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Table(
         name = "branches",
@@ -22,85 +22,74 @@ import java.util.List;
                         name = "uk_branch_name_store",
                         columnNames = {"name", "store_id"}
                 )
+        },
+        indexes = {
+                @Index(name = "idx_branch_store", columnList = "store_id"),
+                @Index(name = "idx_branch_manager", columnList = "branch_manager_id")
         }
 )
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @Builder
+@NoArgsConstructor @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Branch {
 
-    // ========================================
-    // ID
-    // ========================================
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // ========================================
-    // Basic Info
-    // ========================================
-
-    @NotBlank(message = "Branch name is required")
-    @Size(max = 150)
+    @NotBlank @Size(max = 150)
     @Column(nullable = false)
     private String name;
 
-    @NotBlank(message = "Address is required")
-    @Size(max = 300)
+    @NotBlank @Size(max = 300)
     @Column(nullable = false)
     private String address;
 
-    @NotBlank(message = "Phone is required")
-    @Size(max = 20)
+    @NotBlank @Size(max = 20)
     @Column(nullable = false)
     private String phone;
 
-    @Email(message = "Invalid email format")
+    @Email
     private String email;
 
-    // ========================================
-    // Working Days
-    // ========================================
-
     @ElementCollection
-    @CollectionTable(
-            name = "branch_working_days",
-            joinColumns = @JoinColumn(name = "branch_id")
-    )
+    @CollectionTable(name = "branch_working_days", joinColumns = @JoinColumn(name = "branch_id"))
     @Column(name = "day")
-    private List<String> workingDays;
+    private List<String> workingDays = new ArrayList<>();
 
-    // ========================================
-    // Working Hours
-    // ========================================
-
-    @NotNull(message = "Open time is required")
+    @NotNull
     private LocalTime openTime;
 
-    @NotNull(message = "Close time is required")
+    @NotNull
     private LocalTime closeTime;
 
-    // ========================================
-    // Relationships
-    // ========================================
-
-    // Many branches belong to one store
+    /**
+     * The store this branch belongs to.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
-    @NotNull(message = "Store is required")
+    @NotNull
     private Store store;
 
-    // One branch has one manager
-    @OneToOne
-    @JoinColumn(name = "manager_id", unique = true)
-    private User manager;
+    /**
+     * Who created this branch — Admin or Store Manager.
+     * Admin can never be branch manager, but CAN create branches.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by_id", nullable = false)
+    @NotNull
+    private User createdBy;
 
-    // ========================================
-    // Auditing
-    // ========================================
+    /**
+     * The assigned Branch Manager.
+     * - Cannot be the Admin.
+     * - Can be the Store Manager (only for 1 branch).
+     * - A dedicated Branch Manager can manage max 2 branches
+     *   (enforced via UserRoleMapping count check in service layer).
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_manager_id")
+    private User branchManager;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -110,15 +99,12 @@ public class Branch {
     private LocalDateTime updatedAt;
 
     @PrePersist
-    protected void onCreation() {
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-
-
 }
